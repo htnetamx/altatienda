@@ -1,0 +1,1 @@
+sequelize-auto -h 80.241.210.22 -d netamxnop -u rocketcode -x Temp@1324 -p 3306 --dialect mysql -c ./server/assets/sequelize-auto-settings.json -o ./server/store/models
