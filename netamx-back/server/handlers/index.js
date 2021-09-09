@@ -1,7 +1,9 @@
 import {
     errorCatch,
     responseSuccess,
-    responseError
+    responseError,
+    responseMasiveSuccess,
+    responseMasiveError
 } from './responses'
 
 import {
@@ -11,7 +13,17 @@ import {
 
 import {
     checkRowProduct,
+    checkRowPromotionsProducts,
+    withoutFoundRepetProduct
 } from './products'
+
+import {
+    checkRowOrderItem
+} from './order'
+
+import {
+    validateLayout
+} from './purchase'
 
 const Handlers = {
     rolesByUser:(source, company_id, collaborator_id) => rolesByUser(source, company_id, collaborator_id),
@@ -19,7 +31,13 @@ const Handlers = {
     errorCatch: (error) => errorCatch(error),
     responseSuccess:(response) => responseSuccess(response),
     responseError:(error, response) => responseError(error, response),
-    checkRowProduct:(data) => checkRowProduct(data)
+    checkRowProduct:(data) => checkRowProduct(data),
+    checkRowPromotionsProducts:(data) => checkRowPromotionsProducts(data),
+    checkRowOrderItem:(data) => checkRowOrderItem(data),
+    responseMasiveSuccess:() => responseMasiveSuccess(),
+    responseMasiveError: (statusCode, error, errorDetail) => responseMasiveError(statusCode, error, errorDetail),
+    withoutFoundRepetProduct:(data) => withoutFoundRepetProduct(data),
+    validateLayout: (layout) => validateLayout(layout)
 }
 
 module.exports = Handlers

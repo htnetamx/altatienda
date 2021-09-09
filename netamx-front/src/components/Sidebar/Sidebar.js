@@ -1,8 +1,9 @@
 /*eslint-disable*/
 import { useState } from 'react';
-import { NavLink as NavLinkRRD, Link } from 'react-router-dom';
+import { NavLink as NavLinkRRD, Link, useHistory } from 'react-router-dom';
 // nodejs library to set properties for components
 import { PropTypes } from 'prop-types';
+import '../../assets/css/neta.css';
 
 // reactstrap components
 import {
@@ -34,10 +35,13 @@ import {
   Row,
   Col,
 } from 'reactstrap';
+import { useMutation } from '@apollo/client';
+import { LOGOUT } from 'mutations';
 
 var ps;
 
 const Sidebar = (props) => {
+  const history = useHistory();
   const [collapseOpen, setCollapseOpen] = useState();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -84,6 +88,23 @@ const Sidebar = (props) => {
     };
   }
 
+  const [logOut] = useMutation(LOGOUT, {
+    onCompleted({ logout }) {
+      if (logout.statusCode === 200) {
+        sessionStorage.clear();
+        history.push('/');
+      } else {
+        //console.log('algo salio mal logout')
+      }
+      setLoading(false);
+    },
+    onError(error) {},
+  });
+
+  const salir = () => {
+    logOut();
+  };
+
   return (
     <Navbar
       className="navbar-vertical fixed-left navbar-light bg-white"
@@ -102,11 +123,7 @@ const Sidebar = (props) => {
         {/* Brand */}
         {logo ? (
           <NavbarBrand className="pt-0" {...navbarBrandProps}>
-            <img
-              alt={logo.imgAlt}
-              className="navbar-brand-img"
-              src={logo.imgSrc}
-            />
+            <img alt={logo.imgAlt} className="logo-neta" src={logo.imgSrc} />
           </NavbarBrand>
         ) : null}
         {/* User */}
@@ -141,8 +158,11 @@ const Sidebar = (props) => {
               </Media>
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
-              <DropdownItem className="noti-title" header tag="div">
-              </DropdownItem>
+              <DropdownItem
+                className="noti-title"
+                header
+                tag="div"
+              ></DropdownItem>
               <DropdownItem to="/admin/user-profile" tag={Link}>
                 <i className="ni ni-single-02" />
                 <span>Perfil</span>
@@ -217,6 +237,15 @@ const Sidebar = (props) => {
           <Nav navbar>{createLinks(routes)}</Nav>
           {/* Divider */}
           <hr className="my-3" />
+          <Nav className="mb-md-3" navbar></Nav>
+          <Nav className="mb-md-3" navbar>
+            <NavItem className="active-pro active">
+              <NavLink onClick={salir} style={{ cursor: 'pointer' }}>
+                <i className="ni ni-button-power" />
+                Cerrar sesión
+              </NavLink>
+            </NavItem>
+          </Nav>
           {/* Heading 
           <h6 className="navbar-heading text-muted">Documentation</h6>
           {/* Navigation 

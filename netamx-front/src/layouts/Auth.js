@@ -7,7 +7,7 @@ import { Container, Row } from 'reactstrap';
 import AuthNavbar from 'components/Navbars/AuthNavbar.js';
 import AuthFooter from 'components/Footers/AuthFooter.js';
 
-import routes from 'routes.js';
+import routes from 'routeLogin';
 
 const Auth = (props) => {
   const mainContent = React.useRef(null);

@@ -46,7 +46,8 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             message: "success2",
                             error: "",
                             response: JSON.stringify({
-                                url: urlStore
+                                url: urlStore,
+                                storeName: storeName
                             })
                         };
                     }else{

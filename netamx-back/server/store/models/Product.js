@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     VisibleIndividually: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     ShortDescription: {
@@ -72,7 +72,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     ShowOnHomepage: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     MetaDescription: {
@@ -80,7 +80,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     AllowCustomerReviews: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     ApprovedRatingSum: {
@@ -100,15 +100,15 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     SubjectToAcl: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     LimitedToStores: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     IsGiftCard: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     GiftCardTypeId: {
@@ -120,15 +120,15 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     RequireOtherProducts: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     AutomaticallyAddRequiredProducts: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     IsDownload: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     DownloadId: {
@@ -136,7 +136,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     UnlimitedDownloads: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     MaxNumberOfDownloads: {
@@ -152,7 +152,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     HasSampleDownload: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     SampleDownloadId: {
@@ -160,7 +160,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     HasUserAgreement: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     UserAgreementText: {
@@ -168,7 +168,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     IsRecurring: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     RecurringCycleLength: {
@@ -184,7 +184,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     IsRental: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     RentalPriceLength: {
@@ -196,15 +196,15 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     IsShipEnabled: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     IsFreeShipping: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     ShipSeparately: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     AdditionalShippingCharge: {
@@ -216,7 +216,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     IsTaxExempt: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     TaxCategoryId: {
@@ -224,7 +224,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     IsTelecommunicationsOrBroadcastingOrElectronicServices: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     ManageInventoryMethodId: {
@@ -236,7 +236,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     UseMultipleWarehouses: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     WarehouseId: {
@@ -248,11 +248,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     DisplayStockAvailability: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     DisplayStockQuantity: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     MinStockQuantity: {
@@ -272,7 +272,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     AllowBackInStockSubscriptions: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     OrderMinimumQuantity: {
@@ -284,23 +284,23 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     AllowAddingOnlyExistingAttributeCombinations: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     NotReturnable: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     DisableBuyButton: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     DisableWishlistButton: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     AvailableForPreOrder: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     PreOrderAvailabilityStartDateTimeUtc: {
@@ -308,7 +308,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     CallForPrice: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     Price: {
@@ -324,7 +324,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     CustomerEntersPrice: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     MinimumCustomerEnteredPrice: {
@@ -336,7 +336,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     BasepriceEnabled: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     BasepriceAmount: {
@@ -356,7 +356,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     MarkAsNew: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     MarkAsNewStartDateTimeUtc: {
@@ -368,11 +368,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     HasTierPrices: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     HasDiscountsApplied: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     Weight: {
@@ -404,11 +404,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     Published: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     Deleted: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.BOOLEAN,
       allowNull: false
     },
     CreatedOnUtc: {

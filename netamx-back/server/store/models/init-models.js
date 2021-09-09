@@ -53,6 +53,7 @@ var _Language = require("./Language");
 var _LocaleStringResource = require("./LocaleStringResource");
 var _LocalizedProperty = require("./LocalizedProperty");
 var _Log = require("./Log");
+var _LoginAttempts = require("./LoginAttempts");
 var _Manufacturer = require("./Manufacturer");
 var _ManufacturerTemplate = require("./ManufacturerTemplate");
 var _MeasureDimension = require("./MeasureDimension");
@@ -64,6 +65,7 @@ var _NewsComment = require("./NewsComment");
 var _NewsLetterSubscription = require("./NewsLetterSubscription");
 var _Order = require("./Order");
 var _OrderItem = require("./OrderItem");
+var _OrderItemStatusHistory = require("./OrderItemStatusHistory");
 var _OrderNote = require("./OrderNote");
 var _PermissionRecord = require("./PermissionRecord");
 var _PermissionRecord_Role_Mapping = require("./PermissionRecord_Role_Mapping");
@@ -91,6 +93,7 @@ var _Product_ProductAttribute_Mapping = require("./Product_ProductAttribute_Mapp
 var _Product_ProductTag_Mapping = require("./Product_ProductTag_Mapping");
 var _Product_SpecificationAttribute_Mapping = require("./Product_SpecificationAttribute_Mapping");
 var _ProductsActivityLogCreateMassive = require("./ProductsActivityLogCreateMassive");
+var _Purchase = require("./Purchase");
 var _QueuedEmail = require("./QueuedEmail");
 var _RecurringPayment = require("./RecurringPayment");
 var _RecurringPaymentHistory = require("./RecurringPaymentHistory");
@@ -100,6 +103,7 @@ var _ReturnRequestAction = require("./ReturnRequestAction");
 var _ReturnRequestReason = require("./ReturnRequestReason");
 var _ReviewType = require("./ReviewType");
 var _RewardPointsHistory = require("./RewardPointsHistory");
+var _Rol = require("./Rol");
 var _ScheduleTask = require("./ScheduleTask");
 var _SearchTerm = require("./SearchTerm");
 var _Setting = require("./Setting");
@@ -117,12 +121,14 @@ var _StockQuantityHistory = require("./StockQuantityHistory");
 var _Store = require("./Store");
 var _StoreMapping = require("./StoreMapping");
 var _StorePickupPoint = require("./StorePickupPoint");
+var _Superheroe = require("./Superheroe");
 var _TaxCategory = require("./TaxCategory");
 var _TaxRate = require("./TaxRate");
 var _TaxTransactionLog = require("./TaxTransactionLog");
 var _TierPrice = require("./TierPrice");
 var _Topic = require("./Topic");
 var _TopicTemplate = require("./TopicTemplate");
+var _TypeStatusOrderItem = require("./TypeStatusOrderItem");
 var _UrlRecord = require("./UrlRecord");
 var _Vendor = require("./Vendor");
 var _VendorAttribute = require("./VendorAttribute");
@@ -185,6 +191,7 @@ function initModels(sequelize) {
   var LocaleStringResource = _LocaleStringResource(sequelize, DataTypes);
   var LocalizedProperty = _LocalizedProperty(sequelize, DataTypes);
   var Log = _Log(sequelize, DataTypes);
+  var LoginAttempts = _LoginAttempts(sequelize, DataTypes);
   var Manufacturer = _Manufacturer(sequelize, DataTypes);
   var ManufacturerTemplate = _ManufacturerTemplate(sequelize, DataTypes);
   var MeasureDimension = _MeasureDimension(sequelize, DataTypes);
@@ -196,6 +203,7 @@ function initModels(sequelize) {
   var NewsLetterSubscription = _NewsLetterSubscription(sequelize, DataTypes);
   var Order = _Order(sequelize, DataTypes);
   var OrderItem = _OrderItem(sequelize, DataTypes);
+  var OrderItemStatusHistory = _OrderItemStatusHistory(sequelize, DataTypes);
   var OrderNote = _OrderNote(sequelize, DataTypes);
   var PermissionRecord = _PermissionRecord(sequelize, DataTypes);
   var PermissionRecord_Role_Mapping = _PermissionRecord_Role_Mapping(sequelize, DataTypes);
@@ -223,6 +231,7 @@ function initModels(sequelize) {
   var Product_ProductTag_Mapping = _Product_ProductTag_Mapping(sequelize, DataTypes);
   var Product_SpecificationAttribute_Mapping = _Product_SpecificationAttribute_Mapping(sequelize, DataTypes);
   var ProductsActivityLogCreateMassive = _ProductsActivityLogCreateMassive(sequelize, DataTypes);
+  var Purchase = _Purchase(sequelize, DataTypes);
   var QueuedEmail = _QueuedEmail(sequelize, DataTypes);
   var RecurringPayment = _RecurringPayment(sequelize, DataTypes);
   var RecurringPaymentHistory = _RecurringPaymentHistory(sequelize, DataTypes);
@@ -232,6 +241,7 @@ function initModels(sequelize) {
   var ReturnRequestReason = _ReturnRequestReason(sequelize, DataTypes);
   var ReviewType = _ReviewType(sequelize, DataTypes);
   var RewardPointsHistory = _RewardPointsHistory(sequelize, DataTypes);
+  var Rol = _Rol(sequelize, DataTypes);
   var ScheduleTask = _ScheduleTask(sequelize, DataTypes);
   var SearchTerm = _SearchTerm(sequelize, DataTypes);
   var Setting = _Setting(sequelize, DataTypes);
@@ -249,12 +259,14 @@ function initModels(sequelize) {
   var Store = _Store(sequelize, DataTypes);
   var StoreMapping = _StoreMapping(sequelize, DataTypes);
   var StorePickupPoint = _StorePickupPoint(sequelize, DataTypes);
+  var Superheroe = _Superheroe(sequelize, DataTypes);
   var TaxCategory = _TaxCategory(sequelize, DataTypes);
   var TaxRate = _TaxRate(sequelize, DataTypes);
   var TaxTransactionLog = _TaxTransactionLog(sequelize, DataTypes);
   var TierPrice = _TierPrice(sequelize, DataTypes);
   var Topic = _Topic(sequelize, DataTypes);
   var TopicTemplate = _TopicTemplate(sequelize, DataTypes);
+  var TypeStatusOrderItem = _TypeStatusOrderItem(sequelize, DataTypes);
   var UrlRecord = _UrlRecord(sequelize, DataTypes);
   var Vendor = _Vendor(sequelize, DataTypes);
   var VendorAttribute = _VendorAttribute(sequelize, DataTypes);
@@ -262,24 +274,25 @@ function initModels(sequelize) {
   var VendorNote = _VendorNote(sequelize, DataTypes);
   var Warehouse = _Warehouse(sequelize, DataTypes);
 
-  Address.belongsToMany(Customer, { through: CustomerAddresses, foreignKey: "Address_Id", otherKey: "Customer_Id" });
-  Category.belongsToMany(Discount, { through: Discount_AppliedToCategories, foreignKey: "Category_Id", otherKey: "Discount_Id" });
-  Country.belongsToMany(ShippingMethod, { through: ShippingMethodRestrictions, foreignKey: "Country_Id", otherKey: "ShippingMethod_Id" });
-  Customer.belongsToMany(Address, { through: CustomerAddresses, foreignKey: "Customer_Id", otherKey: "Address_Id" });
-  Customer.belongsToMany(CustomerRole, { through: Customer_CustomerRole_Mapping, foreignKey: "Customer_Id", otherKey: "CustomerRole_Id" });
-  CustomerRole.belongsToMany(Customer, { through: Customer_CustomerRole_Mapping, foreignKey: "CustomerRole_Id", otherKey: "Customer_Id" });
-  CustomerRole.belongsToMany(PermissionRecord, { through: PermissionRecord_Role_Mapping, foreignKey: "CustomerRole_Id", otherKey: "PermissionRecord_Id" });
-  Discount.belongsToMany(Category, { through: Discount_AppliedToCategories, foreignKey: "Discount_Id", otherKey: "Category_Id" });
-  Discount.belongsToMany(Manufacturer, { through: Discount_AppliedToManufacturers, foreignKey: "Discount_Id", otherKey: "Manufacturer_Id" });
-  Discount.belongsToMany(Product, { through: Discount_AppliedToProducts, foreignKey: "Discount_Id", otherKey: "Product_Id" });
-  Manufacturer.belongsToMany(Discount, { through: Discount_AppliedToManufacturers, foreignKey: "Manufacturer_Id", otherKey: "Discount_Id" });
-  PermissionRecord.belongsToMany(CustomerRole, { through: PermissionRecord_Role_Mapping, foreignKey: "PermissionRecord_Id", otherKey: "CustomerRole_Id" });
-  Product.belongsToMany(Discount, { through: Discount_AppliedToProducts, foreignKey: "Product_Id", otherKey: "Discount_Id" });
-  Product.belongsToMany(ProductTag, { through: Product_ProductTag_Mapping, foreignKey: "Product_Id", otherKey: "ProductTag_Id" });
-  ProductTag.belongsToMany(Product, { through: Product_ProductTag_Mapping, foreignKey: "ProductTag_Id", otherKey: "Product_Id" });
-  ShippingMethod.belongsToMany(Country, { through: ShippingMethodRestrictions, foreignKey: "ShippingMethod_Id", otherKey: "Country_Id" });
+  Address.belongsToMany(Customer, { as: 'Customers', through: CustomerAddresses, foreignKey: "Address_Id", otherKey: "Customer_Id" });
+  Category.belongsToMany(Discount, { as: 'Discounts', through: Discount_AppliedToCategories, foreignKey: "Category_Id", otherKey: "Discount_Id" });
+  Country.belongsToMany(ShippingMethod, { as: 'ShippingMethods', through: ShippingMethodRestrictions, foreignKey: "Country_Id", otherKey: "ShippingMethod_Id" });
+  Customer.belongsToMany(Address, { as: 'Addresses', through: CustomerAddresses, foreignKey: "Customer_Id", otherKey: "Address_Id" });
+  Customer.belongsToMany(CustomerRole, { as: 'CustomerRoles', through: Customer_CustomerRole_Mapping, foreignKey: "Customer_Id", otherKey: "CustomerRole_Id" });
+  CustomerRole.belongsToMany(Customer, { as: 'Customers', through: Customer_CustomerRole_Mapping, foreignKey: "CustomerRole_Id", otherKey: "Customer_Id" });
+  CustomerRole.belongsToMany(PermissionRecord, { as: 'PermissionRecords', through: PermissionRecord_Role_Mapping, foreignKey: "CustomerRole_Id", otherKey: "PermissionRecord_Id" });
+  Discount.belongsToMany(Category, { as: 'Categories', through: Discount_AppliedToCategories, foreignKey: "Discount_Id", otherKey: "Category_Id" });
+  Discount.belongsToMany(Manufacturer, { as: 'Manufacturers', through: Discount_AppliedToManufacturers, foreignKey: "Discount_Id", otherKey: "Manufacturer_Id" });
+  Discount.belongsToMany(Product, { as: 'Products', through: Discount_AppliedToProducts, foreignKey: "Discount_Id", otherKey: "Product_Id" });
+  Manufacturer.belongsToMany(Discount, { as: 'Discounts', through: Discount_AppliedToManufacturers, foreignKey: "Manufacturer_Id", otherKey: "Discount_Id" });
+  PermissionRecord.belongsToMany(CustomerRole, { as: 'CustomerRoles', through: PermissionRecord_Role_Mapping, foreignKey: "PermissionRecord_Id", otherKey: "CustomerRole_Id" });
+  Product.belongsToMany(Discount, { as: 'Discounts', through: Discount_AppliedToProducts, foreignKey: "Product_Id", otherKey: "Discount_Id" });
+  Product.belongsToMany(ProductTag, { as: 'ProductTags', through: Product_ProductTag_Mapping, foreignKey: "Product_Id", otherKey: "ProductTag_Id" });
+  ProductTag.belongsToMany(Product, { as: 'Products', through: Product_ProductTag_Mapping, foreignKey: "ProductTag_Id", otherKey: "Product_Id" });
+  ShippingMethod.belongsToMany(Country, { as: 'Countries', through: ShippingMethodRestrictions, foreignKey: "ShippingMethod_Id", otherKey: "Country_Id" });
+  OrderItemStatusHistory.belongsTo(ActivityLogCreateMassive, { as: "ActivityLogMassive", foreignKey: "ActivityLogMassiveId"});
+  ActivityLogCreateMassive.hasMany(OrderItemStatusHistory, { as: "OrderItemStatusHistories", foreignKey: "ActivityLogMassiveId"});
   Product.belongsTo(ActivityLogCreateMassive, { as: "IdActivityLogCreateMassive_ActivityLogCreateMassive", foreignKey: "IdActivityLogCreateMassive"});
- 
   ActivityLogCreateMassive.hasMany(Product, { as: "Products", foreignKey: "IdActivityLogCreateMassive"});
   ProductsActivityLogCreateMassive.belongsTo(ActivityLogCreateMassive, { as: "IdActivityLogCreateMassive_ActivityLogCreateMassive", foreignKey: "IdActivityLogCreateMassive"});
   ActivityLogCreateMassive.hasMany(ProductsActivityLogCreateMassive, { as: "ProductsActivityLogCreateMassives", foreignKey: "IdActivityLogCreateMassive"});
@@ -288,7 +301,7 @@ function initModels(sequelize) {
   Affiliate.belongsTo(Address, { as: "Address", foreignKey: "AddressId"});
   Address.hasMany(Affiliate, { as: "Affiliates", foreignKey: "AddressId"});
   Customer.belongsTo(Address, { as: "ShippingAddress", foreignKey: "ShippingAddress_Id"});
-  Address.hasMany(Customer, { as: "CustomersX", foreignKey: "ShippingAddress_Id"});
+  Address.hasMany(Customer, { as: "Customersx", foreignKey: "ShippingAddress_Id"});
   Customer.belongsTo(Address, { as: "BillingAddress", foreignKey: "BillingAddress_Id"});
   Address.hasMany(Customer, { as: "BillingAddress_Customers", foreignKey: "BillingAddress_Id"});
   CustomerAddresses.belongsTo(Address, { as: "Address", foreignKey: "Address_Id"});
@@ -396,7 +409,7 @@ function initModels(sequelize) {
   LocalizedProperty.belongsTo(Language, { as: "Language", foreignKey: "LanguageId"});
   Language.hasMany(LocalizedProperty, { as: "LocalizedProperties", foreignKey: "LanguageId"});
   News.belongsTo(Language, { as: "Language", foreignKey: "LanguageId"});
-  Language.hasMany(News, { as: "News", foreignKey: "LanguageId"});
+  Language.hasMany(News, { as: "Newss", foreignKey: "LanguageId"});
   Poll.belongsTo(Language, { as: "Language", foreignKey: "LanguageId"});
   Language.hasMany(Poll, { as: "Polls", foreignKey: "LanguageId"});
   Discount_AppliedToManufacturers.belongsTo(Manufacturer, { as: "Manufacturer", foreignKey: "Manufacturer_Id"});
@@ -419,6 +432,8 @@ function initModels(sequelize) {
   Order.hasMany(Shipment, { as: "Shipments", foreignKey: "OrderId"});
   GiftCard.belongsTo(OrderItem, { as: "PurchasedWithOrderItem", foreignKey: "PurchasedWithOrderItemId"});
   OrderItem.hasMany(GiftCard, { as: "GiftCards", foreignKey: "PurchasedWithOrderItemId"});
+  OrderItemStatusHistory.belongsTo(OrderItem, { as: "OrderItem", foreignKey: "OrderItemId"});
+  OrderItem.hasMany(OrderItemStatusHistory, { as: "OrderItemStatusHistories", foreignKey: "OrderItemId"});
   PermissionRecord_Role_Mapping.belongsTo(PermissionRecord, { as: "PermissionRecord", foreignKey: "PermissionRecord_Id"});
   PermissionRecord.hasMany(PermissionRecord_Role_Mapping, { as: "PermissionRecord_Role_Mappings", foreignKey: "PermissionRecord_Id"});
   PictureBinary.belongsTo(Picture, { as: "Picture", foreignKey: "PictureId"});
@@ -479,6 +494,8 @@ function initModels(sequelize) {
   ReviewType.hasMany(ProductReview_ReviewType_Mapping, { as: "ProductReview_ReviewType_Mappings", foreignKey: "ReviewTypeId"});
   Order.belongsTo(RewardPointsHistory, { as: "RewardPointsHistoryEntry", foreignKey: "RewardPointsHistoryEntryId"});
   RewardPointsHistory.hasMany(Order, { as: "Orders", foreignKey: "RewardPointsHistoryEntryId"});
+  Superheroe.belongsTo(Rol, { as: "Role", foreignKey: "RoleId"});
+  Rol.hasMany(Superheroe, { as: "Superheroes", foreignKey: "RoleId"});
   ShipmentItem.belongsTo(Shipment, { as: "Shipment", foreignKey: "ShipmentId"});
   Shipment.hasMany(ShipmentItem, { as: "ShipmentItems", foreignKey: "ShipmentId"});
   ShippingMethodRestrictions.belongsTo(ShippingMethod, { as: "ShippingMethod", foreignKey: "ShippingMethod_Id"});
@@ -499,6 +516,12 @@ function initModels(sequelize) {
   Store.hasMany(ProductReview, { as: "ProductReviews", foreignKey: "StoreId"});
   StoreMapping.belongsTo(Store, { as: "Store", foreignKey: "StoreId"});
   Store.hasMany(StoreMapping, { as: "StoreMappings", foreignKey: "StoreId"});
+  LoginAttempts.belongsTo(Superheroe, { as: "SuperHeroe", foreignKey: "SuperHeroeId"});
+  Superheroe.hasMany(LoginAttempts, { as: "LoginAttempts", foreignKey: "SuperHeroeId"});
+  OrderItem.belongsTo(TypeStatusOrderItem, { as: "TypeStatusOrderItem", foreignKey: "TypeStatusOrderItemId"});
+  TypeStatusOrderItem.hasMany(OrderItem, { as: "OrderItems", foreignKey: "TypeStatusOrderItemId"});
+  OrderItemStatusHistory.belongsTo(TypeStatusOrderItem, { as: "TypeStatusOrderItem", foreignKey: "TypeStatusOrderItemId"});
+  TypeStatusOrderItem.hasMany(OrderItemStatusHistory, { as: "OrderItemStatusHistories", foreignKey: "TypeStatusOrderItemId"});
   VendorNote.belongsTo(Vendor, { as: "Vendor", foreignKey: "VendorId"});
   Vendor.hasMany(VendorNote, { as: "VendorNotes", foreignKey: "VendorId"});
   VendorAttributeValue.belongsTo(VendorAttribute, { as: "VendorAttribute", foreignKey: "VendorAttributeId"});
@@ -561,6 +584,7 @@ function initModels(sequelize) {
     LocaleStringResource,
     LocalizedProperty,
     Log,
+    LoginAttempts,
     Manufacturer,
     ManufacturerTemplate,
     MeasureDimension,
@@ -572,6 +596,7 @@ function initModels(sequelize) {
     NewsLetterSubscription,
     Order,
     OrderItem,
+    OrderItemStatusHistory,
     OrderNote,
     PermissionRecord,
     PermissionRecord_Role_Mapping,
@@ -599,6 +624,7 @@ function initModels(sequelize) {
     Product_ProductTag_Mapping,
     Product_SpecificationAttribute_Mapping,
     ProductsActivityLogCreateMassive,
+    Purchase,
     QueuedEmail,
     RecurringPayment,
     RecurringPaymentHistory,
@@ -608,6 +634,7 @@ function initModels(sequelize) {
     ReturnRequestReason,
     ReviewType,
     RewardPointsHistory,
+    Rol,
     ScheduleTask,
     SearchTerm,
     Setting,
@@ -625,12 +652,14 @@ function initModels(sequelize) {
     Store,
     StoreMapping,
     StorePickupPoint,
+    Superheroe,
     TaxCategory,
     TaxRate,
     TaxTransactionLog,
     TierPrice,
     Topic,
     TopicTemplate,
+    TypeStatusOrderItem,
     UrlRecord,
     Vendor,
     VendorAttribute,

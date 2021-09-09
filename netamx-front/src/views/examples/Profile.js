@@ -9,7 +9,7 @@ import {
   Input,
   Container,
   Row,
-  Col, Tooltip
+  Col, Tooltip, Spinner,
 } from 'reactstrap';
 // core components
 import { useState } from 'react';
@@ -29,9 +29,11 @@ const Profile = () => {
   const [textTitleModal, setTextTitleModal]= useState('Titulo del Modal');
   const [textBodyModal, setTextBodyModal]= useState('Texto modal');
   const [urlGenerada, setUrlGenerada] =  useState('https://tutiendita.netamx.app')
+  const [nameStore, setNameStore] =  useState('')
   const [modal, setModal] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipOpenCompany, setTooltipOpenCompany] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const toggle = () => setTooltipOpen(!tooltipOpen);
   const toggleCompany = () => setTooltipOpenCompany(!tooltipOpenCompany);
@@ -70,8 +72,9 @@ const Profile = () => {
         const data = JSON.parse(createStore.response);
         //console.log("data obtendida:", data)
         setTextTitleModal('Guardado exitoso');
-        setTextBodyModal(`La tienda se ha guardado con exito, a continuación te dejaremos la url que deberás copiar para compartirla con tus clientes:`);
+        setTextBodyModal('');
         setUrlGenerada(data.url)
+        setNameStore(data.storeName);
         setModal(true)
       } else if(createStore.statusCode === 401) {
         setTextTitleModal('Necesitamos de tu atención');
@@ -85,6 +88,7 @@ const Profile = () => {
         setUrlGenerada('')
         setModal(true)
       }
+      setLoading(false);
     },
     onError(error) {
       
@@ -107,6 +111,7 @@ const Profile = () => {
         setErrorForm('');
       }, 3000);
     }else{
+      setLoading(true);
       saveStore({
         variables: {
           storeName,
@@ -245,7 +250,7 @@ const Profile = () => {
                   <hr className="my-4" />
                 </Form>
                 <div style={{ textAlign: 'center' }}>
-                  <Button onClick={validateForm}>Dar de alta</Button>
+                {loading ? <Spinner  color="info" /> : <Button onClick={validateForm}>Dar de alta</Button>}
                   <div style={{color:'red', marginTop:15}}>{errorForm}</div>
                 </div>
               </CardBody>
@@ -253,7 +258,7 @@ const Profile = () => {
           </Col>
         </Row>
       </Container>
-    <ModalNotification textBody={textBodyModal} titleModal={textTitleModal} modal={modal} closeModal={closeModal} urlGenerada={urlGenerada} cleanInputs={cleanInputs}/>
+    <ModalNotification textBody={textBodyModal} titleModal={textTitleModal} modal={modal} closeModal={closeModal} urlGenerada={urlGenerada} cleanInputs={cleanInputs} nameStore={nameStore}/>
     </>
   );
 };

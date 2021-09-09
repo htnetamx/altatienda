@@ -11,16 +11,19 @@ import {
   Col,
 } from 'reactstrap';
 // core components
-import {useState} from 'react'
-;import { CSVLink } from 'react-csv';
+import { useState, useEffect } from 'react';
+import { CSVLink } from 'react-csv';
 import { useMutation, useQuery } from '@apollo/client';
 import { LOAD_MASSIVE_PRODUCTS } from '../../mutations';
 import { GET_LIST_REGISTER_PRODUCTS } from '../../queries';
+import { Spinner } from 'reactstrap';
 import UserHeader from 'components/Headers/HeaderNeta';
 import HistoryData from 'components/Tables/HistoryData';
 import ModalUpload from 'components/Modals/modalUploads';
+import { useHistory } from 'react-router-dom';
 
 const UpdateProducts = () => {
+  const history = useHistory();
   const headers = [
     { label: 'ProductId', key: 'PI' },
     { label: 'ProductType', key: 'PT' },
@@ -71,7 +74,10 @@ const UpdateProducts = () => {
     { label: 'DeliveryDate', key: 'DD' },
     { label: 'IsTaxExempt', key: 'ITE' },
     { label: 'TaxCategory', key: 'TC' },
-    { label: 'IsTelecommunicationsOrBroadcastingOrElectronicServices', key: 'ITOBOES' },
+    {
+      label: 'IsTelecommunicationsOrBroadcastingOrElectronicServices',
+      key: 'ITOBOES',
+    },
     { label: 'ManageInventoryMethod', key: 'MIM' },
     { label: 'ProductAvailabilityRange', key: 'PAR' },
     { label: 'UseMultipleWarehouses', key: 'UMW' },
@@ -120,21 +126,217 @@ const UpdateProducts = () => {
     { label: 'LimitedToStores', key: 'LTS' },
   ];
   const filas2 = [
-    { PI: "", PT: "", PGPI: "", VI: "", name: "", SD:"", FD:"", vendor:"", PTem:"", SOH:"", DO:"", MK:"",MD:"", MT:"",SN:"", ACR:"", published:"", sku:"", MPN:"", gtin:"", IGC:"", GCT:"", OGCA:"", ROP:"", RPI:"", AARP:"", ID:"", DI:"", UD:"", MND:"", DAT:"", HSD:"", SDI:"", HUA:"", UAT:"", IR:"", RCL:"", RCP:"", RTC:"", IRental:"", RPL:"", RPP:"", ISE:"", IFS:"", SS:"", ASC:"", DD:"", ITE:"", TC:"", ITOBOES:"", MIM:"", PAR:"", UMW:"", WHI:"", SQ:"", DSA:"", DSQ:"", MSQ:"", LSA:"", NAFQB:"", BMO:"", ABISS:"", OMQ:"", OMAXQ:"", AQU:"", AAOEAC:"", NOTR:"", DBB:"", DWB:"", AFPO:"", POASDTU:"", CADP:"", price:"", Oprice:"", PCost:"", CEP:"", MCEP:"", MAXCEP:"", BEE:"", BPA:"", BPU:"", BBA:"", BBU:"", MAN:"", MANSDTU:"", MANEDTU:"", weight:"", length:"", width:"", height:"", ASDTU:"", AEDTU:"", categories:"", manufacturers:"", PTags:"", LTS:""},
-    { PI: "", PT: "", PGPI: "", VI: "", name: "", SD:"", FD:"", vendor:"", PTem:"", SOH:"", DO:"", MK:"",MD:"", MT:"",SN:"", ACR:"", published:"", sku:"", MPN:"", gtin:"", IGC:"", GCT:"", OGCA:"", ROP:"", RPI:"", AARP:"", ID:"", DI:"", UD:"", MND:"", DAT:"", HSD:"", SDI:"", HUA:"", UAT:"", IR:"", RCL:"", RCP:"", RTC:"", IRental:"", RPL:"", RPP:"", ISE:"", IFS:"", SS:"", ASC:"", DD:"", ITE:"", TC:"", ITOBOES:"", MIM:"", PAR:"", UMW:"", WHI:"", SQ:"", DSA:"", DSQ:"", MSQ:"", LSA:"", NAFQB:"", BMO:"", ABISS:"", OMQ:"", OMAXQ:"", AQU:"", AAOEAC:"", NOTR:"", DBB:"", DWB:"", AFPO:"", POASDTU:"", CADP:"", price:"", Oprice:"", PCost:"", CEP:"", MCEP:"", MAXCEP:"", BEE:"", BPA:"", BPU:"", BBA:"", BBU:"", MAN:"", MANSDTU:"", MANEDTU:"", weight:"", length:"", width:"", height:"", ASDTU:"", AEDTU:"", categories:"", manufacturers:"", PTags:"", LTS:""},
+    {
+      PI: '',
+      PT: '',
+      PGPI: '',
+      VI: '',
+      name: '',
+      SD: '',
+      FD: '',
+      vendor: '',
+      PTem: '',
+      SOH: '',
+      DO: '',
+      MK: '',
+      MD: '',
+      MT: '',
+      SN: '',
+      ACR: '',
+      published: '',
+      sku: '',
+      MPN: '',
+      gtin: '',
+      IGC: '',
+      GCT: '',
+      OGCA: '',
+      ROP: '',
+      RPI: '',
+      AARP: '',
+      ID: '',
+      DI: '',
+      UD: '',
+      MND: '',
+      DAT: '',
+      HSD: '',
+      SDI: '',
+      HUA: '',
+      UAT: '',
+      IR: '',
+      RCL: '',
+      RCP: '',
+      RTC: '',
+      IRental: '',
+      RPL: '',
+      RPP: '',
+      ISE: '',
+      IFS: '',
+      SS: '',
+      ASC: '',
+      DD: '',
+      ITE: '',
+      TC: '',
+      ITOBOES: '',
+      MIM: '',
+      PAR: '',
+      UMW: '',
+      WHI: '',
+      SQ: '',
+      DSA: '',
+      DSQ: '',
+      MSQ: '',
+      LSA: '',
+      NAFQB: '',
+      BMO: '',
+      ABISS: '',
+      OMQ: '',
+      OMAXQ: '',
+      AQU: '',
+      AAOEAC: '',
+      NOTR: '',
+      DBB: '',
+      DWB: '',
+      AFPO: '',
+      POASDTU: '',
+      CADP: '',
+      price: '',
+      Oprice: '',
+      PCost: '',
+      CEP: '',
+      MCEP: '',
+      MAXCEP: '',
+      BEE: '',
+      BPA: '',
+      BPU: '',
+      BBA: '',
+      BBU: '',
+      MAN: '',
+      MANSDTU: '',
+      MANEDTU: '',
+      weight: '',
+      length: '',
+      width: '',
+      height: '',
+      ASDTU: '',
+      AEDTU: '',
+      categories: '',
+      manufacturers: '',
+      PTags: '',
+      LTS: '',
+    },
+    {
+      PI: '',
+      PT: '',
+      PGPI: '',
+      VI: '',
+      name: '',
+      SD: '',
+      FD: '',
+      vendor: '',
+      PTem: '',
+      SOH: '',
+      DO: '',
+      MK: '',
+      MD: '',
+      MT: '',
+      SN: '',
+      ACR: '',
+      published: '',
+      sku: '',
+      MPN: '',
+      gtin: '',
+      IGC: '',
+      GCT: '',
+      OGCA: '',
+      ROP: '',
+      RPI: '',
+      AARP: '',
+      ID: '',
+      DI: '',
+      UD: '',
+      MND: '',
+      DAT: '',
+      HSD: '',
+      SDI: '',
+      HUA: '',
+      UAT: '',
+      IR: '',
+      RCL: '',
+      RCP: '',
+      RTC: '',
+      IRental: '',
+      RPL: '',
+      RPP: '',
+      ISE: '',
+      IFS: '',
+      SS: '',
+      ASC: '',
+      DD: '',
+      ITE: '',
+      TC: '',
+      ITOBOES: '',
+      MIM: '',
+      PAR: '',
+      UMW: '',
+      WHI: '',
+      SQ: '',
+      DSA: '',
+      DSQ: '',
+      MSQ: '',
+      LSA: '',
+      NAFQB: '',
+      BMO: '',
+      ABISS: '',
+      OMQ: '',
+      OMAXQ: '',
+      AQU: '',
+      AAOEAC: '',
+      NOTR: '',
+      DBB: '',
+      DWB: '',
+      AFPO: '',
+      POASDTU: '',
+      CADP: '',
+      price: '',
+      Oprice: '',
+      PCost: '',
+      CEP: '',
+      MCEP: '',
+      MAXCEP: '',
+      BEE: '',
+      BPA: '',
+      BPU: '',
+      BBA: '',
+      BBU: '',
+      MAN: '',
+      MANSDTU: '',
+      MANEDTU: '',
+      weight: '',
+      length: '',
+      width: '',
+      height: '',
+      ASDTU: '',
+      AEDTU: '',
+      categories: '',
+      manufacturers: '',
+      PTags: '',
+      LTS: '',
+    },
   ];
-  const [description, setDescription] = useState('Descripcion');
-  const [textTitleModal, setTextTitleModal]= useState('Titulo del Modal');
-  const [textBodyModal, setTextBodyModal]= useState('Texto modal');
+  const [description, setDescription] = useState('Adicion de productos');
+  const [textTitleModal, setTextTitleModal] = useState('Titulo del Modal');
+  const [textBodyModal, setTextBodyModal] = useState('Texto modal');
   const [modal, setModal] = useState(false);
   const [dataTable, setDataTable] = useState([]);
   const [errorData, setErrorData] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorDetail, setErrorDetail] = useState([]);
 
   const closeModal = () => setModal(!modal);
 
-  const updateDescription = (e) =>{
-setDescription(e.target.value);
-  }
+  const updateDescription = (e) => {
+    setDescription(e.target.value);
+  };
 
   const getBase64 = (file) => {
     const data = new Promise((resolve) => {
@@ -151,20 +353,34 @@ setDescription(e.target.value);
 
   const [createMassiveProducts] = useMutation(LOAD_MASSIVE_PRODUCTS, {
     onCompleted({ createMassiveProducts }) {
-      if(createMassiveProducts.statusCode === 200){
-        //console.log('todo ok');
+      if (createMassiveProducts.statusCode === 200) {
         setTextTitleModal('Guardado exitoso');
         setTextBodyModal('Las modificaciones se han aplicado con éxito.');
-        setModal(true)
-      }else{
-        //console.log('tuvimos error');
+        setModal(true);
+        refetch();
+      } else {
         const datos = JSON.parse(createMassiveProducts.response);
+        setErrorDetail(datos.errorDetail);
         setTextTitleModal('Necesitamos de tu atención');
-        setTextBodyModal(`${datos.errorDocument} Por favor revise la información y vuelva a intentarlo. No se realizó ningún cambio.`);
-        setModal(true)
+        setTextBodyModal(
+          `${
+            datos.errorDocument === undefined || datos.errorDocument === ''
+              ? 'Hemos encontrado algunos errores.'
+              : datos.errorDocument
+          } Por favor revise la información y vuelva a intentarlo. No se realizó ningún cambio.`
+        );
+        setModal(true);
       }
+      setLoading(false);
     },
-    onError(err) {},
+    onError(err) {
+      setLoading(false);
+      setTextTitleModal('Necesitamos de tu atención');
+      setTextBodyModal(
+        'Nuestro servicio esta presentando fallas, por favor intente mas tarde'
+      );
+      setModal(true);
+    },
   });
   const uploadFile = async (file) => {
     const streamString = await getBase64(file);
@@ -177,7 +393,6 @@ setDescription(e.target.value);
         body: partsStream[1],
       },
     };
-    //console.log('fileToUpload', fileToUpload);
     createMassiveProducts({
       variables: { doc: fileToUpload, Description: description },
     });
@@ -185,10 +400,10 @@ setDescription(e.target.value);
 
   const checkInput = () => {
     const file = document.getElementsByName('archivosubido')[0].files[0];
-    //console.log('file cargadooo', file);
     if (file !== undefined) {
       uploadFile(file);
-    }else{
+      setLoading(true);
+    } else {
       setErrorData('Por favor seleccione un archivo');
       setTimeout(() => {
         setErrorData('');
@@ -198,9 +413,14 @@ setDescription(e.target.value);
 
   const updateData = (data) => {
     const datos = JSON.parse(data.getListLogCreateMassiveProducts.response);
-    //console.log(datos)
     setDataTable(datos);
   };
+
+  useEffect(() => {
+    if (!sessionStorage.getItem('session')) {
+      history.push('/access/login');
+    }
+  }, [history]);
 
   const { refetch } = useQuery(GET_LIST_REGISTER_PRODUCTS, {
     notifyOnNetworkStatusChange: true,
@@ -213,85 +433,101 @@ setDescription(e.target.value);
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
-          
           <Col className="order-xl-1" xl="12">
             <Card className="bg-secondary shadow">
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Subir productos</h3>
+                    <h3 className="mb-0">Alta de productos</h3>
                   </Col>
                   <Col className="text-right" xs="4"></Col>
                 </Row>
               </CardHeader>
               <CardBody>
                 <Form>
-                <Row>
-                      
-                  <Col lg="6" style={{marginBottom:40}}>
-                    <label className="form-control-label" htmlFor="archivosubido">
-                            Formato disponible 
-                    </label><br/>
-                    <CSVLink
-                      data={filas2}
-                      headers={headers}
-                      filename={'layout-productos.csv'}
-                    >
-                      <div className="btn btn-secondary">Descargar layout</div>
-                    </CSVLink>
-                      
-                      </Col>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="archivosubido"
-                          >
-                            Seleccionar archivo
-                          </label>
+                  <Row>
+                    <Col lg="6" style={{ marginBottom: 40 }}>
+                      <label
+                        className="form-control-label"
+                        htmlFor="archivosubido"
+                      >
+                        Formato disponible
+                      </label>
+                      <br />
+                      <CSVLink
+                        data={filas2}
+                        headers={headers}
+                        filename={'layout-productos.csv'}
+                      >
+                        <div className="btn btn-secondary">
+                          Descargar layout
+                        </div>
+                      </CSVLink>
+                    </Col>
+                    <Col lg="6">
+                      <FormGroup>
+                        <label
+                          className="form-control-label"
+                          htmlFor="archivosubido"
+                        >
+                          Seleccionar archivo
+                        </label>
 
-                          <Input
-                            className="form-control-alternative"
-                            id="archivosubido"
-                            placeholder="Username"
-                            type="file"
-                            name="archivosubido"
-                          />
-                        </FormGroup>
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="description"
-                          >
-                            Descripción
-                          </label>
+                        <Input
+                          className="form-control-alternative"
+                          id="archivosubido"
+                          placeholder="Username"
+                          type="file"
+                          name="archivosubido"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <label
+                          className="form-control-label"
+                          htmlFor="description"
+                        >
+                          Descripción
+                        </label>
 
-                          <Input
-                            className="form-control-alternative"
-                            id="description"
-                            type="text"
-                            name="description"
-                            placeholder="Descripción"
-                            onChange={updateDescription}
-                            value={description}
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  
+                        <Input
+                          className="form-control-alternative"
+                          id="description"
+                          type="text"
+                          name="description"
+                          placeholder="Descripción"
+                          onChange={updateDescription}
+                          value={description}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
                 </Form>
                 <Row>
                   <Col lg="6"></Col>
-                  <Col lg="6"><div style={{textAlign:"center"}}><Button onClick={checkInput}>Cargar archivo</Button></div>
-                  <div style={{color:'red', marginTop:15, textAlign:"center"}}>{errorData}</div>
+                  <Col lg="6">
+                    <div style={{ textAlign: 'center' }}>
+                      {loading ? (
+                        <Spinner color="info" />
+                      ) : (
+                        <Button onClick={checkInput}>Cargar archivo</Button>
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        color: 'red',
+                        marginTop: 15,
+                        textAlign: 'center',
+                      }}
+                    >
+                      {errorData}
+                    </div>
                   </Col>
                 </Row>
-                
               </CardBody>
             </Card>
           </Col>
         </Row>
-        <Row style={{marginTop:20}}>
+        <Row style={{ marginTop: 20 }}>
           <Col className="order-xl-1" xl="12">
             <Card className="bg-secondary shadow">
               <CardHeader className="bg-white border-0">
@@ -302,13 +538,19 @@ setDescription(e.target.value);
                   <Col className="text-right" xs="4"></Col>
                 </Row>
               </CardHeader>
-              <CardBody>
-               <HistoryData data={dataTable}/>
+              <CardBody className="container-log">
+                <HistoryData data={dataTable} />
               </CardBody>
             </Card>
           </Col>
         </Row>
-        <ModalUpload textBody={textBodyModal} titleModal={textTitleModal} modal={modal} closeModal={closeModal}/>
+        <ModalUpload
+          textBody={textBodyModal}
+          titleModal={textTitleModal}
+          modal={modal}
+          closeModal={closeModal}
+          errorDetail={errorDetail}
+        />
       </Container>
     </>
   );

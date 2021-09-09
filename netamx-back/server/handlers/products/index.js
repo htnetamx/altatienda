@@ -1,8 +1,68 @@
+import * as db from '../../database'
 import productTemplate from "../../constants/productTemplate";
 import MeasureWeight from "../../constants/MeasureWeight";
 var moment = require('moment'); 
 
-const checkRowProduct = (data) =>{
+const withoutFoundRepetProduct = (data) => {
+    let result = true
+    let todo =[]
+    try {
+        data.forEach(element => {
+            result = result && !todo.includes(element[0])
+            todo.push(element[0])
+        });
+    } catch (error) {
+        result = false
+    }
+    return result
+}
+
+const checkRowPromotionsProducts = async (data) =>{
+    let status = true
+    let errors = []
+    let Id = null
+    let ShowOnHomepage = 0
+    let OrderMinimumQuantity = 0
+    let OrderMaximumQuantity = 0
+    let Price = 0
+    let OldPrice = 0
+
+    let UpdatedOnUtc = moment();
+    try {   
+        const dataProduct = await db.sequelize.query("select p.Id,p.Price, p.OldPrice from Product p where p.Sku ='"+data.B+"' ORDER BY p.CreatedOnUtc desc limit 1", { type: db.sequelize.QueryTypes.SELECT});
+        if(dataProduct.length == 1) {
+            Id = dataProduct[0].Id
+        }else if(dataProduct.length > 1){
+            status= false
+            errors.push('Existe más de un producto con este SKU.')
+        }else {
+            status= false
+            errors.push('No existe el SKU del producto.')
+        }
+        ShowOnHomepage =  data.A == 'TRUE' ? 1 : 0
+        OrderMinimumQuantity = data.K
+        OrderMaximumQuantity = data.L
+        Price = data.M
+        OldPrice = data.N
+
+    } catch (error) {
+        status = false
+        errors.push(error)
+    }
+    return {
+        status,
+        errors,
+        Id,
+        ShowOnHomepage,
+        OrderMinimumQuantity,
+        OrderMaximumQuantity,
+        Price,
+        OldPrice,
+        UpdatedOnUtc
+    }
+}
+
+const checkRowProduct = async (data) =>{
     let status = true
     let errors = []
     let ProductTypeId= null
@@ -12,7 +72,7 @@ const checkRowProduct = (data) =>{
     let ShortDescription = ''
     let FullDescription = ''
     let VendorId =null
-    let ProductTemplateId= null
+    let ProductTemplateId = undefined
     let ShowOnHomepage = false
     let DisplayOrder =0
     let MetaKeywords =''
@@ -127,9 +187,13 @@ const checkRowProduct = (data) =>{
         AllowCustomerReviews = data.P == 'TRUE' ? 1 : 0
         Published =  data.Q == 'TRUE' ? 1 : 0
         ManufacturerPartNumber = data.S
-        
         if(data.R.length > 1){
             Sku = data.R
+            const dataProductSku = await db.sequelize.query("select p.Id from Product p where p.Sku ='"+Sku+"'", { type: db.sequelize.QueryTypes.SELECT});
+            if(dataProductSku.length > 0) {
+                status=false
+                errors.push('El producto con Sku '+Sku +" ya esta dado de alta.")
+            }
         }else{
             errors.push('No tenemos disponible el SKU.')
             status = false;
@@ -335,5 +399,7 @@ const checkRowProduct = (data) =>{
 }
 
 module.exports = { 
-    checkRowProduct
+    checkRowProduct,
+    checkRowPromotionsProducts,
+    withoutFoundRepetProduct
 } 

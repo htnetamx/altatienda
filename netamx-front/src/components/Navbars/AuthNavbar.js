@@ -23,6 +23,7 @@ const AdminNavbar = () => {
               src={
                 require('../../assets/img/brand/argon-react-white.png').default
               }
+              style={{height:'100px'}}
             />
           </NavbarBrand>
           
