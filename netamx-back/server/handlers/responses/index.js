@@ -14,6 +14,20 @@ const responseSuccess = (response) =>{
         response
     };
 }
+const responseMasiveSuccess = () =>{
+    return {
+        statusCode: 200,
+        errorDocument: "",
+        errorDetail: ""
+    };
+}
+const responseMasiveError = (statusCode, error, errorDetail) =>{
+    return {
+        statusCode: statusCode,
+        errorDocument: error,
+        errorDetail: JSON.stringify(errorDetail)
+    };
+}
 const responseError = (error, response) =>{
     return {
         statusCode: 400,
@@ -25,5 +39,7 @@ const responseError = (error, response) =>{
 module.exports = { 
     errorCatch,
     responseSuccess,
-    responseError
+    responseError,
+    responseMasiveSuccess,
+    responseMasiveError
 } 

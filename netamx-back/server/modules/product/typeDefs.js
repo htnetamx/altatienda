@@ -8,16 +8,18 @@ const typeDefs = gql`
   }
   input inputUpdatePromotions {
     doc: Upload!
-    nameAction: String!
+    Description: String!
   }
   # Queries
   extend type Query {
     getListLogCreateMassiveProducts: response
+    getListLogCreateMassiveProductsPromotions: response
   }
   #Mutaciones
   extend type Mutation {
     createMassiveProducts(input: inputCreateProduct): response
     updateMassivePromotionsProducts(input: inputUpdatePromotions): response
+    updateMassivePriceProducts(doc: Upload!): response
   }
 `;
 module.exports = typeDefs;

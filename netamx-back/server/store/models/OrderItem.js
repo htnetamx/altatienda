@@ -90,6 +90,14 @@ module.exports = function(sequelize, DataTypes) {
     RentalEndDateUtc: {
       type: DataTypes.DATE,
       allowNull: true
+    },
+    TypeStatusOrderItemId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'TypeStatusOrderItem',
+        key: 'Id'
+      }
     }
   }, {
     sequelize,
@@ -116,6 +124,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "ProductId" },
+        ]
+      },
+      {
+        name: "OrderItem_FK",
+        using: "BTREE",
+        fields: [
+          { name: "TypeStatusOrderItemId" },
         ]
       },
     ]

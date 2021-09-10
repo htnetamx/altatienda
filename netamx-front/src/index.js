@@ -11,6 +11,7 @@ import 'assets/scss/argon-dashboard-react.scss';
 
 import AdminLayout from 'layouts/Admin.js';
 import AuthLayout from 'layouts/Auth.js';
+import LoginLayout from 'layouts/Login.js';
 
 ReactDOM.render(
   <ApolloProvider client={client()}>
@@ -19,7 +20,8 @@ ReactDOM.render(
         <Switch>
           <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
           <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-          <Redirect from="/" to="/admin/index" />
+          <Route path="/access" render={(props) => <LoginLayout {...props} />} />
+          <Redirect from="/" to="/access/login" />
         </Switch>
       </BrowserRouter>
     </ApolloHooksProvider>
