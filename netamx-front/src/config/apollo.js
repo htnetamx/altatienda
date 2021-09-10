@@ -2,8 +2,9 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import fetch from 'node-fetch';
 
-const urlService = 'https://api.netamx.app/';
+//const urlService = 'https://api.netamx.app/';
 // 'http://localhost:5000/graphql'
+const urlService = 'http://localhost:5000/graphql';
 const httpLink = new HttpLink({
   uri: urlService,
   // uri: 'http://localhost:5000/graphql',
