@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
 //const urlService = location.includes('localhost') || location.includes('develop') ? 'https://api-dev-neta.therocketcode.com/' : 'https://api.netamx.app/';
 //console.log('urlService', urlService)
 // 'http://localhost:5000/graphql'
-const urlService = 'http://localhost:5000/graphql';
+const urlService = 'http://localhost:5001/graphql';
 const httpLink = new HttpLink({
   uri: urlService,
   // uri: 'http://localhost:5000/graphql',

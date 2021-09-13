@@ -19,6 +19,7 @@ import UserHeader from 'components/Headers/UserHeader.js';
 import ModalNotification from 'components/Modals/modalNotification';
 import React from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import Select from "react-dropdown-select";
 const Profile = () => {
   const [storeName, setStoreName] = useState('');
   //const [hostValue, setHostValue] = useState('https://tutienda.netamx.app');
@@ -51,8 +52,8 @@ const Profile = () => {
   };
 
   const updateAdress = (e) => {
-      setAddressStore(e.description);
-      setplaceId(e.place_id);
+      setAddressStore(e.value.description);
+      setplaceId(e.value.place_id);
   };
 
   const updateNameCompany = (e) => {
@@ -60,11 +61,7 @@ const Profile = () => {
   };
 
   const updateHunter = (e) => {
-    setHunterStore(e.target.value);
-  };
-
-  const updateplaceId = (e) => {
-    setplaceId(e.target.value);
+    setHunterStore(e[0].value);
   };
 
   const updatePhone = (e) => {
@@ -80,7 +77,7 @@ const Profile = () => {
         const data = JSON.parse(createStore.response);
         //console.log("data obtendida:", data)
         setTextTitleModal('Guardado exitoso');
-        setTextBodyModal('');
+        setTextBodyModal('Todo bien, todo correcto y yo que me alegro.');
         setUrlGenerada(data.url)
         setNameStore(data.storeName);
         setModal(true)
@@ -99,7 +96,6 @@ const Profile = () => {
       setLoading(false);
     },
     onError(error) {
-      
     },
   });
 
@@ -112,11 +108,11 @@ const Profile = () => {
     setPhoneStore('');
     setPhoneStore('');
     setHunterStore('');
-    setplaceIdStore('');
+    setplaceId('');
   }
 
   const validateForm = () => {
-    if(storeName === '' || storeName === null || storeName === undefined || phoneStore === '' || phoneStore === null || phoneStore === undefined || addressStore === '' || addressStore === null || addressStore === undefined ||  companyName === '' || companyName === null || companyName === undefined || hunterStore === ''){
+    if(storeName === '' || storeName === null || storeName === undefined || phoneStore === '' || phoneStore === null || phoneStore === undefined || addressStore === '' || addressStore === null || addressStore === undefined ||  companyName === '' || companyName === null || companyName === undefined || hunterStore === '' || hunterStore === null || hunterStore === undefined ){
       setErrorForm('Todos los campos son obligatorios');
       setTimeout(() => {
         setErrorForm('');
@@ -133,10 +129,17 @@ const Profile = () => {
           placeId: placeId
         },
       });
-      
     }
   };
-
+  
+  const hunterOptions = [
+    { value: 'Alexis', label: 'Alexis'},
+    { value: 'Estrella', label: 'Estrella'},
+    { value: 'Javier', label: 'Javier' },
+    { value: 'Javier Leyte', label: 'Javier Leyte'},
+    { value: 'Jorge Eduardo', label: 'Jorge Eduardo' },
+    { value: 'Ninguno, llegué solo', label: 'Ninguno, llegué solo'}
+  ]
  
   
   return (
@@ -218,8 +221,23 @@ const Profile = () => {
                             value={phoneStore}
                             type="text"
                             onChange={updatePhone}
-                            maxLength={10}
+                            maxLength={12}
                           />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="hunterStore"
+                          >
+                            Hunter
+                          </label>
+                          <Select
+                            className="form-control-alternative"
+                            options={hunterOptions} 
+                            onChange={updateHunter}
+                             />
                         </FormGroup>
                       </Col>
                       <Col lg="6">
@@ -258,43 +276,10 @@ const Profile = () => {
                           />
                         </FormGroup>
                        </Col> */}
-                      <Col md={12}>
-                        <GooglePlacesAutocomplete
-                            required={true}
-                            inputClassName="form-control"
-                            suggestionsStyles={{ boxSizing: "content-box", width: "2px", background: "0px center", border: "0px", fontSize: "inherit", opacity: "1", outline: "0px", padding: "0px", color: "inherit" }}
-                            placeholder="Dirección Tiendita"
-                            autocompletionRequest={{
-                                componentRestrictions: {
-                                    country: ['mx'],
-                                }
-                            }}
-                            autoComplete={false}
-                            onSelect={updateAdress}
-                        />
-                      </Col>
                     </Row>
-                    <Row>
+                    {/* <Row>
                       <Col lg="6">
                         <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="hunterStore"
-                          >
-                            Hunter
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="hunterStore"
-                            value={hunterStore}
-                            type="text"
-                            onChange={updateHunter}
-                            maxLength={50}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        {/*<FormGroup>
                           <label
                             className="form-control-label"
                             htmlFor="hostValue"
@@ -308,7 +293,30 @@ const Profile = () => {
                             type="text"
                             disabled="disabled"
                           />
-                        </FormGroup>*/}
+                        </FormGroup>
+                      </Col>
+                    </Row> */}
+                    <Row>
+                      <Col md={12}>
+                        <label
+                              className="form-control-label"
+                              htmlFor="addressStore"
+                            >
+                              Dirección
+                            </label>
+                          <GooglePlacesAutocomplete
+                              onPlaceSelected={updateAdress}
+                              language={"es"}
+                              placeholder="Dirección Tiendita"
+                              autocompletionRequest={{
+                                  componentRestrictions: {
+                                      country: ['mx']
+                                  }
+                              }}
+                              selectProps={{
+                                onChange: updateAdress
+                              }}
+                          />
                       </Col>
                     </Row>
                   </div>

@@ -1,5 +1,5 @@
 import Index from 'views/Index.js';
-//import Profile from 'views/examples/Profile.js';
+import Profile from 'views/examples/Profile.js';
 //import Maps from 'views/examples/Maps.js';
 //import Register from 'views/examples/Register.js';
 //import Login from 'views/examples/Login.js';
@@ -33,6 +33,15 @@ var routes = [
     component: UpdateSProcurement,
     layout: '/admin',
   },
+
+  {
+    path: "/user-profile",
+    name: "User Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/admin",
+  },
+
   {
     /*
  {
@@ -81,13 +90,6 @@ var routes = [
     name: "Maps",
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
-    layout: "/admin",
-  },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
     layout: "/admin",
   },
   {
