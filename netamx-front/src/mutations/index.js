@@ -28,6 +28,8 @@ export const CREATE_STORE = gql`
     $companyName: String!
     $companyAddress: String!
     $companyPhoneNumber: String!
+    $hunter: String!
+    $placeId: String!
   ) {
     createStore(
       input: {
@@ -35,6 +37,8 @@ export const CREATE_STORE = gql`
         companyName: $companyName
         companyAddress: $companyAddress
         companyPhoneNumber: $companyPhoneNumber
+        hunter: $hunter
+        placeId: $placeId
       }
     ) {
       statusCode
