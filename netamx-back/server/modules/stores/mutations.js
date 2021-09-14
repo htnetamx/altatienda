@@ -28,9 +28,39 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     var urlStore = `https://${nameStoreTemp}.netamx.app/`;
                     var host = `${nameStoreTemp}.netamx.app`;
                     const resultQueryStore = await db.Store.findOne({where: {Url: urlStore}})
-                    console.log(response.data.result.geometry.location.lng);
-                    console.log(response.data.result.geometry.location.lat);
                     if(resultQueryStore == null && response!=null){
+                        const lat=response.data.result.geometry.location.lat;
+                        const lng=response.data.result.geometry.location.lng;
+                        var config = {
+                            params: {
+                              key: "AIzaSyB_crvidpxslegL0D-Uhetp393_OJmfixo",
+                              latlng: lat+","+lng,
+                              result_type: "administrative_area_level_3"
+                            },
+                          }
+                        const response2= await axios.get("https://maps.googleapis.com/maps/api/geocode/json",config);
+                        config = {
+                            params: {
+                              key: "AIzaSyB_crvidpxslegL0D-Uhetp393_OJmfixo",
+                              latlng: lat+","+lng,
+                              result_type: "sublocality_level_1"
+                            },
+                          }
+                        const response3= await axios.get("https://maps.googleapis.com/maps/api/geocode/json",config);
+                        var delegacion;
+                        try{
+                            delegacion=response2.data.results[0].address_components[0].long_name;
+                        }
+                        catch{
+                            delegacion="";
+                        }
+                        var colonia;
+                        try{
+                            colonia=response3.data.results[0].address_components[0].long_name;
+                        }
+                        catch{
+                            colonia="";
+                        }
                         await db.Store.create(
                             {
                                 Name: storeName,
@@ -46,8 +76,12 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 DefaultLanguageId: 0,
                                 CreatedOnUtc : moment(),
                                 Hunter: hunter,
-                                Longitud: response.data.result.geometry.location.lng,
-                                Latitud: response.data.result.geometry.location.lat
+                                Longitud: lng,
+                                Latitud: lat,
+                                Delegacion:delegacion,
+                                Colonia:colonia,
+                                PlaceId:placeId,
+                                FormattedAddress:response.data.result.formatted_address
                             }
                         )
                         return {

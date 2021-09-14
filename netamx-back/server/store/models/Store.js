@@ -70,6 +70,22 @@ module.exports = function(sequelize, DataTypes) {
     Tipo: {
       type: DataTypes.STRING(100),
       allowNull: false
+    },
+    Delegacion: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    Colonia: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    PlaceId: {
+      type: DataTypes.STRING(10),
+      allowNull: false
+    },
+    FormattedAddress: {
+      type: DataTypes.STRING(100),
+      allowNull: false
     }
   }, {
     sequelize,
