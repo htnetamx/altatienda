@@ -46,6 +46,30 @@ module.exports = function(sequelize, DataTypes) {
     DisplayOrder: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    Longitud: {
+      type: DataTypes.DECIMAL(20,15),
+      allowNull: false
+    },
+    Latitud: {
+      type: DataTypes.DECIMAL(20,15),
+      allowNull: false
+    },
+    Hunter: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    CreatedOnUtc: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    CompanyPhoneNumber2: {
+      type: DataTypes.STRING(1000),
+      allowNull: true
+    },
+    Tipo: {
+      type: DataTypes.STRING(100),
+      allowNull: false
     }
   }, {
     sequelize,

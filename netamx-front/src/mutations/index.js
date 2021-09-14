@@ -28,6 +28,8 @@ export const CREATE_STORE = gql`
     $companyName: String!
     $companyAddress: String!
     $companyPhoneNumber: String!
+    $companyPhoneNumber2: String!
+    $tipo: String!
     $hunter: String!
     $placeId: String!
   ) {
@@ -37,6 +39,8 @@ export const CREATE_STORE = gql`
         companyName: $companyName
         companyAddress: $companyAddress
         companyPhoneNumber: $companyPhoneNumber
+        companyPhoneNumber2: $companyPhoneNumber2
+        tipo: $tipo
         hunter: $hunter
         placeId: $placeId
       }

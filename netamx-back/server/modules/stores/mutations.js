@@ -2,6 +2,7 @@ import serverResponse from "./../../middlewares/server-response";
 import encrypt from "./../../middlewares/encrypt";
 import authConfig from '../../constants/auth'
 import messages from '../../constants/messagesResponses'
+import axios from 'axios'
 require('../../config/config');
 var moment = require('moment');
 
@@ -11,7 +12,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
         {
             const callback = async () => {
                 try {
-                    const {storeName, companyName, companyAddress, companyPhoneNumber,hunter,placeId} = input;
+                    const {storeName, companyName, companyAddress, companyPhoneNumber,companyPhoneNumber2,tipo,hunter,placeId} = input;
                     var nameStoreArray = storeName.toLowerCase().split(" ");
                     var nameStoreTemp = "";
                     // for (var i=0; i < nameStoreArray.length; i++) {
@@ -23,10 +24,12 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     for (var i=0; i < nameStoreArray.length; i++) {
                         nameStoreTemp =  nameStoreTemp + nameStoreArray[i]
                     }
-                    const response= await axios.get("https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBB4T59gcXepqvOWCO34dKOnbntyATO3r4&placeid=" + placeId);
+                    const response= await axios.get("https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyB_crvidpxslegL0D-Uhetp393_OJmfixo&placeid=" + placeId);
                     var urlStore = `https://${nameStoreTemp}.netamx.app/`;
                     var host = `${nameStoreTemp}.netamx.app`;
                     const resultQueryStore = await db.Store.findOne({where: {Url: urlStore}})
+                    console.log(response.data.result.geometry.location.lng);
+                    console.log(response.data.result.geometry.location.lat);
                     if(resultQueryStore == null && response!=null){
                         await db.Store.create(
                             {
@@ -36,13 +39,15 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 CompanyName: companyName,
                                 CompanyAddress: companyAddress,
                                 CompanyPhoneNumber: companyPhoneNumber,
+                                CompanyPhoneNumber2: companyPhoneNumber2,
+                                Tipo: tipo,
                                 DisplayOrder: 1,
                                 SslEnabled: 0,
                                 DefaultLanguageId: 0,
                                 CreatedOnUtc : moment(),
                                 Hunter: hunter,
-                                Latitud: response.data.result.geometry.location.lat,
-                                Longitud: response.data.result.geometry.location.lng
+                                Longitud: response.data.result.geometry.location.lng,
+                                Latitud: response.data.result.geometry.location.lat
                             }
                         )
                         return {

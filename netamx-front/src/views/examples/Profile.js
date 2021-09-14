@@ -20,10 +20,13 @@ import ModalNotification from 'components/Modals/modalNotification';
 import React from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import Select from "react-dropdown-select";
+import { error } from 'jquery';
 const Profile = () => {
   const [storeName, setStoreName] = useState('');
   //const [hostValue, setHostValue] = useState('https://tutienda.netamx.app');
   const [phoneStore, setPhoneStore] = useState('');
+  const [phoneStore2, setPhoneStore2] = useState('');
+  const [tipo, setTipo] = useState('');
   const [addressStore, setAddressStore] = useState('');
   const [hunterStore, setHunterStore] = useState('');
   const [placeId, setplaceId] = useState('');
@@ -71,13 +74,24 @@ const Profile = () => {
     }
   };
 
+  const updatePhone2 = (e) => {
+    const re = /^[0-9\b]+$/;
+    if (e.target.value === '' || re.test(e.target.value)) {
+      setPhoneStore2(e.target.value);
+    }
+  };
+
+  const updateTipo = (e) => {
+      setTipo(e[0].value);
+  };
+
   const [saveStore] = useMutation(CREATE_STORE, {
     onCompleted({ createStore }) {
       if (createStore.statusCode === 200) {
         const data = JSON.parse(createStore.response);
         //console.log("data obtendida:", data)
         setTextTitleModal('Guardado exitoso');
-        setTextBodyModal('Todo bien, todo correcto y yo que me alegro.');
+        setTextBodyModal('');
         setUrlGenerada(data.url)
         setNameStore(data.storeName);
         setModal(true)
@@ -96,6 +110,7 @@ const Profile = () => {
       setLoading(false);
     },
     onError(error) {
+      console.log(error);
     },
   });
 
@@ -106,13 +121,14 @@ const Profile = () => {
     setCompanyName('');
     setAddressStore('');
     setPhoneStore('');
-    setPhoneStore('');
+    setPhoneStore2('');
+    setTipo('');
     setHunterStore('');
     setplaceId('');
   }
 
   const validateForm = () => {
-    if(storeName === '' || storeName === null || storeName === undefined || phoneStore === '' || phoneStore === null || phoneStore === undefined || addressStore === '' || addressStore === null || addressStore === undefined ||  companyName === '' || companyName === null || companyName === undefined || hunterStore === '' || hunterStore === null || hunterStore === undefined ){
+    if(storeName === '' || storeName === null || storeName === undefined || phoneStore === '' || phoneStore === null || phoneStore === undefined || phoneStore2 === '' || phoneStore2 === null || phoneStore2 === undefined || tipo === '' || tipo === null || tipo === undefined|| addressStore === '' || addressStore === null || addressStore === undefined ||  companyName === '' || companyName === null || companyName === undefined || hunterStore === '' || hunterStore === null || hunterStore === undefined ){
       setErrorForm('Todos los campos son obligatorios');
       setTimeout(() => {
         setErrorForm('');
@@ -125,7 +141,9 @@ const Profile = () => {
           companyName,
           companyAddress: addressStore,
           companyPhoneNumber: phoneStore,
+          companyPhoneNumber2: phoneStore2,
           hunter: hunterStore,
+          tipo:tipo,
           placeId: placeId
         },
       });
@@ -141,6 +159,16 @@ const Profile = () => {
     { value: 'Ninguno, llegué solo', label: 'Ninguno, llegué solo'}
   ]
  
+  const tipoOptions = [
+    { value: 'Tienda Abarrotes', label: 'Tienda Abarrotes'},
+    { value: 'Pollería', label: 'Pollería'},
+    { value: 'Papelería', label: 'Papelería' },
+    { value: 'Farmacia', label: 'Farmacia'},
+    { value: 'Panadería', label: 'Panadería' },
+    { value: 'Restaurante', label: 'Restaurante' },
+    { value: 'Dulcería', label: 'Dulcería' },
+    { value: 'Otro', label: 'Otro'}
+  ]
   
   return (
     <>
@@ -229,15 +257,18 @@ const Profile = () => {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="hunterStore"
+                            htmlFor="phoneStore2"
                           >
-                            Hunter
+                            Teléfono 2
                           </label>
-                          <Select
+                          <Input
                             className="form-control-alternative"
-                            options={hunterOptions} 
-                            onChange={updateHunter}
-                             />
+                            id="phoneStore2"
+                            value={phoneStore2}
+                            type="text"
+                            onChange={updatePhone2}
+                            maxLength={12}
+                          />
                         </FormGroup>
                       </Col>
                       <Col lg="6">
@@ -256,6 +287,38 @@ const Profile = () => {
                             disabled="disabled"
                           />
                         </FormGroup>*/}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg="6">
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="tipoStore"
+                            >
+                              Tipo De La Tienda
+                            </label>
+                            <Select
+                              className="form-control-alternative"
+                              options={tipoOptions} 
+                              onChange={updateTipo}
+                              />
+                          </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="hunterStore"
+                            >
+                              Hunter
+                            </label>
+                            <Select
+                              className="form-control-alternative"
+                              options={hunterOptions} 
+                              onChange={updateHunter}
+                              />
+                          </FormGroup>
                       </Col>
                     </Row>
                     <Row>
