@@ -33,6 +33,33 @@ export const GET_LIST_PROCUREMENT = gql`
   }
 `;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const GET_LIST_PROMOTIONS = gql`
   query getListLogCreateMassiveProductsPromotions {
     getListLogCreateMassiveProductsPromotions {
