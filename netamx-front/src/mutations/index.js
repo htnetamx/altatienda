@@ -29,8 +29,8 @@ export const CREATE_STORE = gql`
     $companyAddress: String!
     $companyPhoneNumber: String!
     $companyPhoneNumber2: String!
-    $tipo: String!
-    $hunter: String!
+    $tipoId: Int!
+    $hunterId: Int!
     $placeId: String!
   ) {
     createStore(
@@ -40,8 +40,8 @@ export const CREATE_STORE = gql`
         companyAddress: $companyAddress
         companyPhoneNumber: $companyPhoneNumber
         companyPhoneNumber2: $companyPhoneNumber2
-        tipo: $tipo
-        hunter: $hunter
+        tipoId: $tipoId
+        hunterId: $hunterId
         placeId: $placeId
       }
     ) {

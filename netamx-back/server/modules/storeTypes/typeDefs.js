@@ -1,20 +1,18 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-  input inputCreateHunter {
+  input inputCreateStoreType {
     Name: String!
-    PhoneNumber: String!
-    Address: String!
   }
 
   # Queries
   extend type Query {
-    getHuntersList: response
+    getStoreTypeList: response
   }
 
   # Mutations
   extend type Mutation {
-    createHunter: response
+    createStoreType: response
   }
 `;
 module.exports = typeDefs;

@@ -12,7 +12,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
         {
             const callback = async () => {
                 try {
-                    const {storeName, companyName, companyAddress, companyPhoneNumber,companyPhoneNumber2,tipo,hunter,placeId} = input;
+                    const {storeName, companyName, companyAddress, companyPhoneNumber,companyPhoneNumber2,tipoId,hunterId,placeId} = input;
                     var nameStoreArray = storeName.toLowerCase().split(" ");
                     var nameStoreTemp = "";
                     // for (var i=0; i < nameStoreArray.length; i++) {
@@ -70,12 +70,12 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 CompanyAddress: companyAddress,
                                 CompanyPhoneNumber: companyPhoneNumber,
                                 CompanyPhoneNumber2: companyPhoneNumber2,
-                                Tipo: tipo,
+                                TipoId: tipoId,
                                 DisplayOrder: 1,
                                 SslEnabled: 0,
                                 DefaultLanguageId: 0,
                                 CreatedOnUtc : moment(),
-                                Hunter: hunter,
+                                HunterId: hunterId,
                                 Longitud: lng,
                                 Latitud: lat,
                                 Delegacion:delegacion,

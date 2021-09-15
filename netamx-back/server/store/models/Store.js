@@ -55,8 +55,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DECIMAL(20,15),
       allowNull: false
     },
-    Hunter: {
-      type: DataTypes.STRING(50),
+    HunterId: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     CreatedOnUtc: {
@@ -67,8 +67,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(1000),
       allowNull: true
     },
-    Tipo: {
-      type: DataTypes.STRING(100),
+    TipoId: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     Delegacion: {

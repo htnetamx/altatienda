@@ -4,12 +4,12 @@ var moment = require('moment');
 
 const Query = (db, rejects, Handlers, bcrypt, Helpers) => {
     return {
-        getHuntersList: async (obj, { input }, {token}, info) => 
+        getStoreTypeList: async (obj, { input }, {token}, info) => 
         {
             const callback = async () => {
                 try {
-                    var data = await db.sequelize.query("select h.Id, h.Name from Hunter h Where h.Name!='Ninguno, llegué solo' Order by h.Name", { type: db.sequelize.QueryTypes.SELECT});
-                    var defaults = await db.sequelize.query("select h.Id, h.Name from Hunter h Where h.Name='Ninguno, llegué solo' Order by h.Name", { type: db.sequelize.QueryTypes.SELECT});
+                    var data = await db.sequelize.query("select st.Id, st.Name from StoreTypes st Where st.Name!='Otro' Order by st.Name", { type: db.sequelize.QueryTypes.SELECT});
+                    var defaults = await db.sequelize.query("select st.Id, st.Name from StoreTypes st Where st.Name='Otro' Order by st.Name", { type: db.sequelize.QueryTypes.SELECT});
                     data.push(defaults[0]);
                     return {
                         statusCode: 200,

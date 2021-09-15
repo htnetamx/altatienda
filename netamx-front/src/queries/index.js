@@ -43,3 +43,14 @@ export const GET_LIST_HUNTERS = gql`
     }
   }
 `;
+
+export const GET_LIST_STORE_TYPES = gql`
+  query getStoreTypeList {
+    getStoreTypeList {
+      statusCode
+      message
+      error
+      response
+    }
+  }
+`;
