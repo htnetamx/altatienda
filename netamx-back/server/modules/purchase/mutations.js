@@ -33,7 +33,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     }else{
                         var productError = [];
                         var productUpdate = [];
-                        var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]],{ raw: false, range:"A1"+":H1", header:"A" });
+                        var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]],{ raw: false, range:"A1"+":I1", header:"A" });
                         var errorLayout = Handlers.validateLayout(xlData[0]);
                         if(errorLayout.length >= 1){
                             return {
@@ -58,6 +58,10 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                     stockQuantity: queryProductTemp.StockQuantity,
                                     ...element
                                 })
+                            }
+                            if(element.Purchase_id == undefined){
+                                productError.push(element);
+                                errorDetail.push({ fila:START_ROW, errors:['El campo Purchase_id es obligatorio ['+ element.Purchase_id+']'] })
                             }
                             START_ROW++
                         });
@@ -90,6 +94,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                         UpdateAt: moment(),
                                         IdActivityLogCreateMassive: IdLog,
                                         IdProduct: element.idProduct,
+                                        PurchaseId: element.Purchase_id
                                     }
                                     const responsePurchase = await db.Purchase.create(inputPurchase, {transaction})
                                     var quantityTemp = Number(element.stockQuantity) + Number (element.Quantity);

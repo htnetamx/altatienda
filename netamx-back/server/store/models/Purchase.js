@@ -54,6 +54,10 @@ module.exports = function(sequelize, DataTypes) {
     IdProduct: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    PurchaseId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,

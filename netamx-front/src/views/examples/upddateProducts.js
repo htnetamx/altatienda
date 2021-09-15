@@ -323,7 +323,7 @@ const UpdateProducts = () => {
       LTS: '',
     },
   ];
-  const [description, setDescription] = useState('Adicion de productos');
+  const [description, setDescription] = useState('Alta de productos');
   const [textTitleModal, setTextTitleModal] = useState('Titulo del Modal');
   const [textBodyModal, setTextBodyModal] = useState('Texto modal');
   const [modal, setModal] = useState(false);
@@ -357,6 +357,7 @@ const UpdateProducts = () => {
         setTextTitleModal('Guardado exitoso');
         setTextBodyModal('Las modificaciones se han aplicado con éxito.');
         setModal(true);
+        setErrorDetail([]);
         refetch();
       } else {
         const datos = JSON.parse(createMassiveProducts.response);
@@ -374,6 +375,7 @@ const UpdateProducts = () => {
       setLoading(false);
     },
     onError(err) {
+      setErrorDetail([]);
       setLoading(false);
       setTextTitleModal('Necesitamos de tu atención');
       setTextBodyModal(
@@ -401,8 +403,20 @@ const UpdateProducts = () => {
   const checkInput = () => {
     const file = document.getElementsByName('archivosubido')[0].files[0];
     if (file !== undefined) {
-      uploadFile(file);
-      setLoading(true);
+      if (
+        file.type === 'text/csv' ||
+        file.type === 'application/vnd.ms-excel'
+      ) {
+        setErrorData(
+          'Formato de archivo no válido, por favor guarde el layout en formato Excel (.xls)'
+        );
+        setTimeout(() => {
+          setErrorData('');
+        }, 5000);
+      } else {
+        uploadFile(file);
+        setLoading(true);
+      }
     } else {
       setErrorData('Por favor seleccione un archivo');
       setTimeout(() => {
@@ -412,8 +426,12 @@ const UpdateProducts = () => {
   };
 
   const updateData = (data) => {
-    const datos = JSON.parse(data.getListLogCreateMassiveProducts.response);
-    setDataTable(datos);
+    if (data.getListLogCreateMassiveProducts.statusCode === 200) {
+      const datos = JSON.parse(data.getListLogCreateMassiveProducts.response);
+      setDataTable(datos);
+    } else {
+      setDataTable([]);
+    }
   };
 
   useEffect(() => {

@@ -14,52 +14,76 @@ import {
 import { useState, useEffect } from 'react';
 import { CSVLink } from 'react-csv';
 import { useMutation, useQuery } from '@apollo/client';
-import { LOAD_MASSIVE_PROCUREMENT } from '../../mutations';
-import { GET_LIST_PROCUREMENT } from '../../queries';
+import { LOAD_MASSIVE_PROMOTIONS } from '../../mutations';
+import { GET_LIST_PROMOTIONS } from '../../queries';
 import { Spinner } from 'reactstrap';
 import UserHeader from 'components/Headers/HeaderNeta';
 import HistoryData from 'components/Tables/HistoryData';
 import ModalUpload from 'components/Modals/modalUploads';
 import { useHistory } from 'react-router-dom';
 
-const UpdateProcurement = () => {
+const CreatePromotions = () => {
   const history = useHistory();
   const headers = [
-    { label: 'Purchase_id', key: 'purchaseID' },
-    { label: 'Date', key: 'date' },
-    { label: 'SKUNeta', key: 'skuNeta' },
-    { label: 'PurchasePrice', key: 'purchasePrice' },
-    { label: 'IVA', key: 'iva' },
-    { label: 'Quantity', key: 'quantityPcs' },
-    { label: 'Caja', key: 'caja' },
-    { label: 'Supplier', key: 'supplier' },
-    { label: 'SupplierId', key: 'supplierID' },
+    { label: 'ShowOnHomepage', key: 'sohp' },
+    { label: 'SKU', key: 'sku' },
+    { label: 'MaxNumberOfDownloads', key: 'mnod' },
+    { label: 'ManageInventoryMethod', key: 'mim' },
+    { label: 'StockQuantity', key: 'stockQ' },
+    { label: 'DisplayStockAvailability', key: 'dsa' },
+    { label: 'DisplayStockQuantity', key: 'dsq' },
+    { label: 'LowStockActivity', key: 'lsa' },
+    { label: 'NotifyAdminForQuantityBelow', key: 'nafqb' },
+    { label: 'BackorderMode', key: 'bm' },
+    { label: 'OrderMinimumQuantity', key: 'orderMinQ' },
+    { label: 'OrderMaximumQuantity', key: 'orderMaxQ' },
+    { label: 'Price', key: 'price' },
+    { label: 'OldPrice', key: 'oldPrice' },
+    { label: 'MarkAsNew', key: 'man' },
+    { label: 'AvailableStartDateTimeUtc', key: 'asdtu' },
+    { label: 'AvailableEndDateTimeUtc', key: 'aedtu' },
   ];
   const filas2 = [
     {
-      purchaseID: '',
-      date: '',
-      skuNeta: '',
-      purchasePrice: '',
-      iva: '',
-      quantityPcs: '',
-      caja: '',
-      supplier: '',
-      supplierID: '',
+      sohp: '',
+      sku: '',
+      mnod: '',
+      mim: '',
+      stockQ: '',
+      dsa: '',
+      dsq: '',
+      lsa: '',
+      nafqb: '',
+      bm: '',
+      orderMinQ: '',
+      orderMaxQ: '',
+      price: '',
+      oldPrice: '',
+      man: '',
+      asdtu: '',
+      aedtu: '',
     },
     {
-      purchaseID: '',
-      date: '',
-      skuNeta: '',
-      purchasePrice: '',
-      iva: '',
-      quantityPcs: '',
-      caja: '',
-      supplier: '',
-      supplierID: '',
+      sohp: '',
+      sku: '',
+      mnod: '',
+      mim: '',
+      stockQ: '',
+      dsa: '',
+      dsq: '',
+      lsa: '',
+      nafqb: '',
+      bm: '',
+      orderMinQ: '',
+      orderMaxQ: '',
+      price: '',
+      oldPrice: '',
+      man: '',
+      asdtu: '',
+      aedtu: '',
     },
   ];
-  const [description, setDescription] = useState('Actualización Inventario');
+  const [description, setDescription] = useState('Creación de promociones');
   const [textTitleModal, setTextTitleModal] = useState('Titulo del Modal');
   const [textBodyModal, setTextBodyModal] = useState('Texto modal');
   const [modal, setModal] = useState(false);
@@ -87,23 +111,25 @@ const UpdateProcurement = () => {
     return data;
   };
 
-  const [createMassiveProducts] = useMutation(LOAD_MASSIVE_PROCUREMENT, {
-    onCompleted({ createProcurement }) {
-      if (createProcurement.statusCode === 200) {
+  const [createMassiveProducts] = useMutation(LOAD_MASSIVE_PROMOTIONS, {
+    onCompleted({ updateMassivePromotionsProducts }) {
+      if (updateMassivePromotionsProducts.statusCode === 200) {
         setTextTitleModal('Guardado exitoso');
         setTextBodyModal('Las modificaciones se han aplicado con éxito.');
         setModal(true);
         setErrorDetail([]);
         refetch();
       } else {
-        const datos = JSON.parse(createProcurement.response);
-        //console.log('datos error procurement', datos);
+        const datos = JSON.parse(updateMassivePromotionsProducts.response);
+        //console.log('datos error', datos);
         setErrorDetail(datos.errorDetail);
         setTextTitleModal('Necesitamos de tu atención');
         setTextBodyModal(
           `${
-            datos.errorDocument === undefined ? '' : datos.errorDocument
-          }  Por favor revise la información y vuelva a intentarlo. No se realizó ningún cambio.`
+            datos.errorDocument === undefined || datos.errorDocument === ''
+              ? 'Hemos encontrado algunos errores.'
+              : datos.errorDocument
+          } Por favor revise la información y vuelva a intentarlo. No se realizó ningún cambio.`
         );
         setModal(true);
       }
@@ -112,9 +138,9 @@ const UpdateProcurement = () => {
     onError(err) {
       setErrorDetail([]);
       setLoading(false);
-      setTextTitleModal('Necesitamos de tu atención');
+      setTextTitleModal('Lo sentimos');
       setTextBodyModal(
-        'Nuestro servicio esta presentando fallas, por favor intente mas tarde'
+        'Nuestro servicio ha presentado fallas, por favor intente mas tarde'
       );
       setModal(true);
     },
@@ -160,22 +186,24 @@ const UpdateProcurement = () => {
     }
   };
 
-  const updateData = (data) => {
-    if (data.getListLogCreateMassivePurchase.statusCode === 200) {
-      const datos = JSON.parse(data.getListLogCreateMassivePurchase.response);
-      setDataTable(datos);
-    } else {
-      setDataTable([]);
-    }
-  };
-
   useEffect(() => {
     if (!sessionStorage.getItem('session')) {
       history.push('/access/login');
     }
   }, [history]);
 
-  const { refetch } = useQuery(GET_LIST_PROCUREMENT, {
+  const updateData = (data) => {
+    if (data.getListLogCreateMassiveProductsPromotions.statusCode === 200) {
+      const datos = JSON.parse(
+        data.getListLogCreateMassiveProductsPromotions.response
+      );
+      setDataTable(datos);
+    } else {
+      setDataTable([]);
+    }
+  };
+
+  const { refetch } = useQuery(GET_LIST_PROMOTIONS, {
     notifyOnNetworkStatusChange: true,
     onCompleted: (dat) => updateData(dat),
   });
@@ -191,7 +219,7 @@ const UpdateProcurement = () => {
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Inventario</h3>
+                    <h3 className="mb-0">Crear promociones</h3>
                   </Col>
                   <Col className="text-right" xs="4"></Col>
                 </Row>
@@ -210,7 +238,7 @@ const UpdateProcurement = () => {
                       <CSVLink
                         data={filas2}
                         headers={headers}
-                        filename={'layout-inventario.csv'}
+                        filename={'layout-create-promotions.csv'}
                       >
                         <div className="btn btn-secondary">
                           Descargar layout
@@ -309,4 +337,4 @@ const UpdateProcurement = () => {
   );
 };
 
-export default UpdateProcurement;
+export default CreatePromotions;

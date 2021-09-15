@@ -4,6 +4,25 @@ var moment = require('moment');
 
 const Query = (db, rejects, Handlers, bcrypt, Helpers) => {
     return {
+        getListLogCreateMassiveProductsPrice: async (obj, { input }, {token}, info) => 
+        {
+            const callback = async () => {
+                try {
+                    const nameAction ='Actualiza precios productos';
+                    const data = await db.sequelize.query("select alcm.Id, alcm.NameAction, alcm.CreatedAt, alcm.UpdatedAt, alcm.Error, alcm.Status, alcm.Detail, alcm.Description from ActivityLogCreateMassive alcm where alcm.NameAction ='"+nameAction+"'", { type: db.sequelize.QueryTypes.SELECT});
+                    console.log(data)
+                    return {
+                        statusCode: 200,
+                        message: "success",
+                        error: '',
+                        response: JSON.stringify(data)
+                    }
+                } catch (error) {
+                    return Handlers.errorCatch(error)
+                }
+            }
+            return await serverResponse.classicResponse(token, [authConfig.ROL_NETAMX], callback);
+        },
         getListLogCreateMassiveProducts: async (obj, { input }, {token}, info) => 
         {
             const callback = async () => {

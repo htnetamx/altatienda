@@ -28,22 +28,57 @@ const checkRowPromotionsProducts = async (data) =>{
     let OldPrice = 0
 
     let UpdatedOnUtc = moment();
-    try {   
-        const dataProduct = await db.sequelize.query("select p.Id,p.Price, p.OldPrice from Product p where p.Sku ='"+data.B+"' ORDER BY p.CreatedOnUtc desc limit 1", { type: db.sequelize.QueryTypes.SELECT});
-        if(dataProduct.length == 1) {
-            Id = dataProduct[0].Id
-        }else if(dataProduct.length > 1){
+    try {
+        let statusMiniumMax= true 
+        const ShowOnHomepageList = ['Verdadero', 'verdadero', 1, '1', 'true', 'TRUE', 'True', 'VERDADERO']
+        if(data.B == undefined ){
             status= false
-            errors.push('Existe más de un producto con este SKU.')
-        }else {
-            status= false
-            errors.push('No existe el SKU del producto.')
+            errors.push('No existe el valor de Sku en la columna SKU.')
+        }else {  
+            const dataProduct = await db.sequelize.query("select p.Id,p.Price, p.OldPrice from Product p where p.Sku ='"+data.B+"' ORDER BY p.CreatedOnUtc desc limit 1", { type: db.sequelize.QueryTypes.SELECT});
+            if(dataProduct.length == 1) {
+                Id = dataProduct[0].Id
+            }else if(dataProduct.length > 1){
+                status= false
+                errors.push('Existe más de un producto con este SKU.')
+            }else {
+                status= false
+                errors.push('El producto con SKU '+ data.B + " no esta aún dado de alta." )
+            }
         }
-        ShowOnHomepage =  data.A == 'TRUE' ? 1 : 0
+        try {
+            // ShowOnHomepage =  data.A == 'TRUE' ? 1 : 0
+            ShowOnHomepage = ShowOnHomepageList.includes(data.A) ? 1 : 0
+        } catch (error) {
+            status= false
+            errors.push('Error en procesar el valor de ShowOnHomepage')
+        }
         OrderMinimumQuantity = data.K
         OrderMaximumQuantity = data.L
         Price = data.M
         OldPrice = data.N
+        if(isNaN(OrderMinimumQuantity)){
+            status= false
+            errors.push('No existe un valor numérico en el campo OrderMinimumQuantity.')
+            statusMiniumMax = false
+        }
+        if(isNaN(OrderMaximumQuantity)){
+            status= false
+            errors.push('No existe un valor numérico en el campo OrderMaximumQuantity.')
+            statusMiniumMax = false
+        }
+        if(statusMiniumMax){
+            try {
+                if(parseInt(OrderMinimumQuantity) > parseInt(OrderMaximumQuantity)){
+                    status= false
+                    errors.push('El valor del campo OrderMinimumQuantity es mayor que el valor del campo OrderMaximumQuantity.')
+                }    
+            } catch (error) {
+                status = false
+                errors.push('No se pudo completar la comparación de los campos OrderMinimumQuantity y OrderMaximumQuantity.')
+            }
+            
+        }
 
     } catch (error) {
         status = false

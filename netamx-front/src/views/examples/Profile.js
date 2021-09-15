@@ -21,6 +21,7 @@ import React from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import Select from "react-dropdown-select";
 import { error } from 'jquery';
+
 const Profile = () => {
   const [storeName, setStoreName] = useState('');
   //const [hostValue, setHostValue] = useState('https://tutienda.netamx.app');
@@ -28,8 +29,6 @@ const Profile = () => {
   const [phoneStore2, setPhoneStore2] = useState('');
   const [tipo, setTipo] = useState('');
   const [addressStore, setAddressStore] = useState('');
-  const [hunterStore, setHunterStore] = useState('');
-  const [placeId, setplaceId] = useState('');
   const [errorForm, setErrorForm] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [textTitleModal, setTextTitleModal]= useState('Titulo del Modal');

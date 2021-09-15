@@ -25,8 +25,8 @@ const ModalUpload = (props) => {
           {textBody}
           <div style={{ marginTop: 10 }}>
             {errorDetail !== undefined ? (
-              errorDetail.map((error) => (
-                <div style={{ marginBottom: 5 }}>
+              errorDetail.map((error, i) => (
+                <div key={i} style={{ marginBottom: 5 }}>
                   <div>Fila: {error.fila}</div>
                   <ul>{getErrorsDetails(error.errors)}</ul>
                 </div>

@@ -1,20 +1,30 @@
 const validateLayout = (layout) =>{
     const arrayError = [];
-    if(layout.A != 'Date'){
+    if(layout.A != 'Purchase_id'){
+        arrayError.push("Purchase_id");
+    }
+    if(layout.B != 'Date'){
         arrayError.push("Date");
-    }else if(layout.B != 'SKUNeta'){
+    }
+    if(layout.C != 'SKUNeta'){
         arrayError.push("SKUNeta");
-    }else if(layout.C != 'PurchasePrice'){
+    }
+    if(layout.D != 'PurchasePrice'){
         arrayError.push("PurchasePrice");
-    }else if (layout.D  != 'IVA'){
+    }
+    if (layout.E  != 'IVA'){
         arrayError.push("IVA");
-    }else if (layout.E != 'Quantity'){
+    }
+    if (layout.F != 'Quantity'){
         arrayError.push("Quantity");
-    }else if (layout.F != 'Caja'){
+    }
+    if (layout.G != 'Caja'){
         arrayError.push("Caja");
-    }else if (layout.G != 'Supplier'){
+    }
+    if (layout.H != 'Supplier'){
         arrayError.push("Supplier");
-    }else if (layout.H != 'SupplierId'){
+    }
+    if (layout.I != 'SupplierId'){
         arrayError.push("SupplierId");
     }
     return arrayError;

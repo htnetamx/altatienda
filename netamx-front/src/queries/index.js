@@ -32,3 +32,25 @@ export const GET_LIST_PROCUREMENT = gql`
     }
   }
 `;
+
+export const GET_LIST_PROMOTIONS = gql`
+  query getListLogCreateMassiveProductsPromotions {
+    getListLogCreateMassiveProductsPromotions {
+      statusCode
+      message
+      error
+      response
+    }
+  }
+`;
+
+export const GET_LIST_UPDATE_PRICES_PRODUCTS = gql`
+  query getListLogCreateMassiveProductsPrice {
+    getListLogCreateMassiveProductsPrice {
+      statusCode
+      message
+      error
+      response
+    }
+  }
+`;
