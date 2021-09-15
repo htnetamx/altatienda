@@ -50,8 +50,38 @@ const checkRowOrderItem = async (data) =>{
     }
 }
 
+const validateLayoutChangeStatusSku = (layout) =>{
+    const arrayError = [];
+    if(layout.A != 'Store_Id'){
+        arrayError.push("Store_Id");
+    }
+    if(layout.B != 'SKU'){
+        arrayError.push("SKU");
+    }
+    if(layout.C != 'Status_SKU'){
+        arrayError.push("Status_SKU");
+    }
+    if (layout.D  != 'Status_Payment'){
+        arrayError.push("Status_Payment");
+    }
+    if (layout.E != 'Status_Shipping'){
+        arrayError.push("Status_Shipping");
+    }
+    if (layout.F != 'Price'){
+        arrayError.push("Price");
+    }
+    if (layout.G != 'Original_Delivery_Date'){
+        arrayError.push("Original_Delivery_Date");
+    }
+    if (layout.H != 'Quantity'){
+        arrayError.push("Quantity");
+    }
+    return arrayError;
+}
+
 
 
 module.exports = { 
-    checkRowOrderItem
+    checkRowOrderItem,
+    validateLayoutChangeStatusSku
 } 

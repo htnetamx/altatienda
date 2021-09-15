@@ -157,7 +157,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     var first_sheet_name = workbook.SheetNames[0];
                     var sheet_name_list = workbook.SheetNames;
                     var worksheet = workbook.Sheets[first_sheet_name];
-                    var allSkuAvailable = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]],{ raw: false, range:"B"+INICIO+":B1048576", header:1, blankrows:false });
+                    var allSkuAvailable = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]],{ raw: false, range:"A"+INICIO+":Q1048576", header:1, blankrows:false });
                     let limit = (INICIO + allSkuAvailable.length) -1
 
                     var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]],{ raw: false, range:"A"+INICIO+":Q"+ limit, header:"A" });
@@ -277,23 +277,25 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
             }
             return await serverResponse.classicResponse(token, [authConfig.ROL_NETAMX], callback);
         },
-        updateMassivePriceProducts: async (obj, { doc }, {token}, info) =>
+        updateMassivePriceProducts: async (obj, { input }, {token}, info) =>
         {
             const callback = async () => {
                 let transaction =await db.sequelize.transaction();
                 try {
                     const nameAction ='Actualiza precios productos';
-                    let incidentsData = await doc
+                    let incidentsData = await input.doc
                     var workbook = XLSX.read(incidentsData.File.body, {type:"base64"});
                     var sheet_name_list = workbook.SheetNames;
                     var jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]], {raw: true});
+                    let START_ROW = 2;
+                    let errorDetail = [];
                     if(jsonData.length == 0){
                         return {
                             statusCode: 401,
                             message: "Este documento no contiene registros para procesar.",
                             error: "",
-                            response: ""
-                        }
+                            response: JSON.stringify({errorDocument : "Este documento no contiene registros para procesar"})
+                        };
                     }else{
                         var productError = [];
                         var productUpdate = [];
@@ -301,6 +303,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             const queryProduct = await db.Product.findOne({ where: { Sku:`${element.SKU}` }});
                             if(queryProduct == null){
                                 productError.push(element);
+                                errorDetail.push({ fila:START_ROW, errors:['El producto con Sku '+ element.SKU+' no existe.'] })
                             }else{
                                 let queryProductTemp = queryProduct.get({ plain: true })
                                 productUpdate.push({
@@ -314,7 +317,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 NameAction: nameAction,
                                 CreatedAt : moment(),
                                 UpdatedAt : moment(),
-                                Description: "",
+                                Description: input.Description,
                                 Status : true
                             }
                             try {
@@ -348,29 +351,30 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 return {
                                     statusCode: 401,
                                     message: "error en el proceso de actualización de precios",
-                                    error: e,
-                                    response: ""
-                                }
+                                    error: error.message,
+                                    response: JSON.stringify({errorDocument : error.messages})
+                                };
                             }
                             await transaction.commit();
-                            return {
-                                statusCode: 200,
-                                message: "",
-                                error: "",
-                                response: ""
-                            }
+                            return Handlers.responseSuccess();
                         }else{
                             return {
                                 statusCode: 402,
                                 message: "Registros SKU no encontrados en la base de datos",
                                 error: "",
-                                response: JSON.stringify(productError)
+                                response: JSON.stringify({errorDetail, errorDocument: ''})
                             }
                         }
                     }
                 } catch (error) {
                     if (transaction) await transaction.rollback();
-                    return Handlers.errorCatch(error)
+                    // return Handlers.errorCatch(error);
+                    return {
+                        statusCode: 400,
+                        message: "",
+                        error: "",
+                        response: JSON.stringify({errorDocument : error.messages})
+                    };
                 }finally{
                     try {
                         if (transaction) await transaction.rollback();

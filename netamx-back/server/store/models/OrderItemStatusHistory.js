@@ -38,6 +38,38 @@ module.exports = function(sequelize, DataTypes) {
         model: 'ActivityLogCreateMassive',
         key: 'Id'
       }
+    },
+    Store_Id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    SKU: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    Status_SKU: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    Status_Payment: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    Status_Shipping: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    Price: {
+      type: DataTypes.DECIMAL(18,4),
+      allowNull: true
+    },
+    Original_Delivery_Date: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    Quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,

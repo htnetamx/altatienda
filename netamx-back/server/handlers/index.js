@@ -18,7 +18,8 @@ import {
 } from './products'
 
 import {
-    checkRowOrderItem
+    checkRowOrderItem,
+    validateLayoutChangeStatusSku
 } from './order'
 
 import {
@@ -37,7 +38,8 @@ const Handlers = {
     responseMasiveSuccess:() => responseMasiveSuccess(),
     responseMasiveError: (statusCode, error, errorDetail) => responseMasiveError(statusCode, error, errorDetail),
     withoutFoundRepetProduct:(data) => withoutFoundRepetProduct(data),
-    validateLayout: (layout) => validateLayout(layout)
+    validateLayout: (layout) => validateLayout(layout),
+    validateLayoutChangeStatusSku: (layout) => validateLayoutChangeStatusSku(layout)
 }
 
 module.exports = Handlers

@@ -5,10 +5,10 @@ import Index from 'views/Index.js';
 //import Login from 'views/examples/Login.js';
 //import Upload from 'views/examples/upload.js';
 import UploadProducts from 'views/examples/upddateProducts';
-//import UpdateSKUStatus from 'views/tools/UpdateSKU';
+import UpdateSKUStatus from 'views/tools/UpdateSKU';
 import UpdateSProcurement from 'views/tools/updateProcurement';
-//import Tables from 'views/examples/Tables.js';
-//import Icons from 'views/examples/Icons.js';
+import UpdatePrices from 'views/tools/updatePrices';
+import CreatePromotions from 'views/tools/createPromotions';
 
 var routes = [
   {
@@ -25,23 +25,38 @@ var routes = [
     component: UploadProducts,
     layout: '/admin',
   },
-
   {
-    path: '/update-procurement',
-    name: 'Inventario',
-    icon: 'ni ni-delivery-fast text-primary',
-    component: UpdateSProcurement,
+    path: '/update-prices',
+    name: 'Actualización de precios',
+    icon: 'ni ni-shop text-primary',
+    component: UpdatePrices,
     layout: '/admin',
   },
   {
-    /*
- {
+    path: '/create-promotions',
+    name: 'Creación de promociones',
+    icon: 'ni ni-tag text-primary',
+    component: CreatePromotions,
+    layout: '/admin',
+  },
+  {
     path: '/update-sku',
     name: 'Estatus por SKU',
     icon: 'ni ni-bullet-list-67 text-primary',
     component: UpdateSKUStatus,
     layout: '/admin',
   },
+
+  {
+    path: '/update-procurement',
+    name: 'Inventario',
+    icon: 'ni ni-collection text-primary',
+    component: UpdateSProcurement,
+    layout: '/admin',
+  },
+  {
+    /*
+ 
   {
     path: '/user-profile',
     name: 'Registro',

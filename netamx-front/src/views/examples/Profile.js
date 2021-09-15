@@ -18,14 +18,12 @@ import { CREATE_STORE } from '../../mutations';
 import UserHeader from 'components/Headers/UserHeader.js';
 import ModalNotification from 'components/Modals/modalNotification';
 import React from 'react';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+
 const Profile = () => {
   const [storeName, setStoreName] = useState('');
   //const [hostValue, setHostValue] = useState('https://tutienda.netamx.app');
   const [phoneStore, setPhoneStore] = useState('');
   const [addressStore, setAddressStore] = useState('');
-  const [hunterStore, setHunterStore] = useState('');
-  const [placeId, setplaceId] = useState('');
   const [errorForm, setErrorForm] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [textTitleModal, setTextTitleModal]= useState('Titulo del Modal');
@@ -51,20 +49,14 @@ const Profile = () => {
   };
 
   const updateAdress = (e) => {
-      setAddressStore(e.description);
-      setplaceId(e.place_id);
+    const re = /^[a-zA-Z0-9_ ]*$/;
+    if (e.target.value === '' || re.test(e.target.value)) {
+      setAddressStore(e.target.value);
+    }
   };
 
   const updateNameCompany = (e) => {
     setCompanyName(e.target.value);
-  };
-
-  const updateHunter = (e) => {
-    setHunterStore(e.target.value);
-  };
-
-  const updateplaceId = (e) => {
-    setplaceId(e.target.value);
   };
 
   const updatePhone = (e) => {
@@ -110,13 +102,10 @@ const Profile = () => {
     setCompanyName('');
     setAddressStore('');
     setPhoneStore('');
-    setPhoneStore('');
-    setHunterStore('');
-    setplaceIdStore('');
   }
 
   const validateForm = () => {
-    if(storeName === '' || storeName === null || storeName === undefined || phoneStore === '' || phoneStore === null || phoneStore === undefined || addressStore === '' || addressStore === null || addressStore === undefined ||  companyName === '' || companyName === null || companyName === undefined || hunterStore === ''){
+    if(storeName === '' || storeName === null || storeName === undefined || phoneStore === '' || phoneStore === null || phoneStore === undefined || addressStore === '' || addressStore === null || addressStore === undefined ||  companyName === '' || companyName === null || companyName === undefined ){
       setErrorForm('Todos los campos son obligatorios');
       setTimeout(() => {
         setErrorForm('');
@@ -129,8 +118,6 @@ const Profile = () => {
           companyName,
           companyAddress: addressStore,
           companyPhoneNumber: phoneStore,
-          hunter: hunterStore,
-          placeId: placeId
         },
       });
       
@@ -241,7 +228,7 @@ const Profile = () => {
                       </Col>
                     </Row>
                     <Row>
-                      {/* <Col md="12">
+                      <Col md="12">
                         <FormGroup>
                           <label
                             className="form-control-label"
@@ -257,58 +244,6 @@ const Profile = () => {
                             onChange={updateAdress}
                           />
                         </FormGroup>
-                       </Col> */}
-                      <Col md={12}>
-                        <GooglePlacesAutocomplete
-                            required={true}
-                            inputClassName="form-control"
-                            suggestionsStyles={{ boxSizing: "content-box", width: "2px", background: "0px center", border: "0px", fontSize: "inherit", opacity: "1", outline: "0px", padding: "0px", color: "inherit" }}
-                            placeholder="Dirección Tiendita"
-                            autocompletionRequest={{
-                                componentRestrictions: {
-                                    country: ['mx'],
-                                }
-                            }}
-                            autoComplete={false}
-                            onSelect={updateAdress}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="hunterStore"
-                          >
-                            Hunter
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="hunterStore"
-                            value={hunterStore}
-                            type="text"
-                            onChange={updateHunter}
-                            maxLength={50}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        {/*<FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="hostValue"
-                          >
-                            Valor del host
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="hostValue"
-                            value={hostValue}
-                            type="text"
-                            disabled="disabled"
-                          />
-                        </FormGroup>*/}
                       </Col>
                     </Row>
                   </div>

@@ -24,6 +24,7 @@ import { useHistory } from 'react-router-dom';
 
 const UpdateSKU = () => {
   const history = useHistory();
+  const fechaFormat = " '09/09/2021 (comilla simple+FECHA)";
   const headers = [
     { label: 'Store_Id', key: 'storeID' },
     { label: 'SKU', key: 'sku' },
@@ -32,6 +33,7 @@ const UpdateSKU = () => {
     { label: 'Status_Shipping', key: 'statusShipping' },
     { label: 'Price', key: 'price' },
     { label: 'Original_Delivery_Date', key: 'originalDeliveryDate' },
+    { label: 'Quantity', key: 'quantity' },
   ];
   const filas2 = [
     {
@@ -41,7 +43,10 @@ const UpdateSKU = () => {
       statusPayment: '',
       statusShipping: '',
       price: '',
-      originalDeliveryDate: '',
+      originalDeliveryDate:
+        'Recuerda dar formato de texto a esta columna para enviar el formato correcto de fecha al guardar el archivo, verifica que el valor luzca de la siguiente manera:' +
+        fechaFormat,
+      quantity: '',
     },
     {
       storeID: '',
@@ -50,11 +55,14 @@ const UpdateSKU = () => {
       statusPayment: '',
       statusShipping: '',
       price: '',
-      originalDeliveryDate: '',
+      originalDeliveryDate:
+        'Recuerda dar formato de texto a esta columna para enviar el formato correcto de fecha al guardar el archivo, verifica que el valor luzca de la siguiente manera:' +
+        fechaFormat,
+      quantity: '',
     },
   ];
   const [description, setDescription] = useState(
-    'Actualizacion status por SKU'
+    'Actualización status por SKU'
   );
   const [textTitleModal, setTextTitleModal] = useState('Titulo del Modal');
   const [textBodyModal, setTextBodyModal] = useState('Texto modal');
@@ -89,6 +97,7 @@ const UpdateSKU = () => {
         setTextTitleModal('Guardado exitoso');
         setTextBodyModal('Las modificaciones se han aplicado con éxito.');
         setModal(true);
+        setErrorDetail([]);
         refetch();
       } else {
         const datos = JSON.parse(updateMassiveChangeStatusSku.response);
@@ -107,6 +116,7 @@ const UpdateSKU = () => {
       setLoading(false);
     },
     onError(err) {
+      setErrorDetail([]);
       setLoading(false);
       setTextTitleModal('Lo sentimos');
       setTextBodyModal(
@@ -134,8 +144,20 @@ const UpdateSKU = () => {
   const checkInput = () => {
     const file = document.getElementsByName('archivosubido')[0].files[0];
     if (file !== undefined) {
-      uploadFile(file);
-      setLoading(true);
+      if (
+        file.type === 'text/csv' ||
+        file.type === 'application/vnd.ms-excel'
+      ) {
+        setErrorData(
+          'Formato de archivo no válido, por favor guarde el layout en formato Excel (.xls)'
+        );
+        setTimeout(() => {
+          setErrorData('');
+        }, 5000);
+      } else {
+        uploadFile(file);
+        setLoading(true);
+      }
     } else {
       setErrorData('Por favor seleccione un archivo');
       setTimeout(() => {
@@ -151,10 +173,14 @@ const UpdateSKU = () => {
   }, [history]);
 
   const updateData = (data) => {
-    const datos = JSON.parse(
-      data.getListLogCreateMassiveUpdateStatusSkus.response
-    );
-    setDataTable(datos);
+    if (data.getListLogCreateMassiveUpdateStatusSkus.statusCode === 200) {
+      const datos = JSON.parse(
+        data.getListLogCreateMassiveUpdateStatusSkus.response
+      );
+      setDataTable(datos);
+    } else {
+      setDataTable([]);
+    }
   };
 
   const { refetch } = useQuery(GET_LIST_SKU_STATUS, {

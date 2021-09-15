@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const MUTATION_TEST = gql`
-  mutation createMassiveProducts($doc: Upload!, $Description : String!) {
+  mutation createMassiveProducts($doc: Upload!, $Description: String!) {
     createMassiveProducts(input: { doc: $doc, Description: $Description }) {
       statusCode
       message
@@ -12,14 +12,14 @@ export const MUTATION_TEST = gql`
 `;
 
 export const LOAD_MASSIVE_PRODUCTS = gql`
-mutation createMassiveProducts($doc: Upload!, $Description : String!) {
-  createMassiveProducts(input: { doc: $doc, Description: $Description }) {
-    statusCode
-    message
-    response
-    error
+  mutation createMassiveProducts($doc: Upload!, $Description: String!) {
+    createMassiveProducts(input: { doc: $doc, Description: $Description }) {
+      statusCode
+      message
+      response
+      error
+    }
   }
-}
 `;
 
 export const CREATE_STORE = gql`
@@ -68,23 +68,52 @@ export const LOGOUT = gql`
 `;
 
 export const LOAD_MASSIVE_STATUS_BY_SKU = gql`
-mutation updateMassiveChangeStatusSku($doc: Upload!, $Description : String!) {
-  updateMassiveChangeStatusSku(input: { doc: $doc, Description: $Description }) {
-    statusCode
-    message
-    response
-    error
+  mutation updateMassiveChangeStatusSku($doc: Upload!, $Description: String!) {
+    updateMassiveChangeStatusSku(
+      input: { doc: $doc, Description: $Description }
+    ) {
+      statusCode
+      message
+      response
+      error
+    }
   }
-}
 `;
 
 export const LOAD_MASSIVE_PROCUREMENT = gql`
-mutation createProcurement($doc: Upload!, $Description : String!) {
-  createProcurement(input: { doc: $doc, Description: $Description }) {
-    statusCode
-    message
-    response
-    error
+  mutation createProcurement($doc: Upload!, $Description: String!) {
+    createProcurement(input: { doc: $doc, Description: $Description }) {
+      statusCode
+      message
+      response
+      error
+    }
   }
-}
+`;
+
+export const LOAD_MASSIVE_PROMOTIONS = gql`
+  mutation updateMassivePromotionsProducts(
+    $doc: Upload!
+    $Description: String!
+  ) {
+    updateMassivePromotionsProducts(
+      input: { doc: $doc, Description: $Description }
+    ) {
+      statusCode
+      message
+      response
+      error
+    }
+  }
+`;
+
+export const LOAD_MASSIVE_UPDATE_PRICES = gql`
+  mutation updateMassivePriceProducts($input: inputUpdateMassivePriceProducts) {
+    updateMassivePriceProducts(input: $input) {
+      statusCode
+      message
+      response
+      error
+    }
+  }
 `;
