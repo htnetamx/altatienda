@@ -41,8 +41,10 @@ const Profile = () => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipOpenCompany, setTooltipOpenCompany] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [hunterList, setHunterList] = useState(false);
-  const [storeTypeList, setStoreTypeList] = useState(false);
+  const [storeTypeList, setStoreTypeList] = useState('');
+  const [hunterList, setHunterList] = useState('');
+  const [placeId, setplaceId] = useState('');
+  const [hunterStore, setHunterStore] = useState('');
 
   const toggle = () => setTooltipOpen(!tooltipOpen);
   const toggleCompany = () => setTooltipOpenCompany(!tooltipOpenCompany);
