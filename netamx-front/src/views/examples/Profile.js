@@ -13,13 +13,15 @@ import {
 } from 'reactstrap';
 // core components
 import { useState } from 'react';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_STORE } from '../../mutations';
 import UserHeader from 'components/Headers/UserHeader.js';
 import ModalNotification from 'components/Modals/modalNotification';
 import React from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import Select from "react-dropdown-select";
+import { GET_LIST_HUNTERS } from '../../queries';
+import { GET_LIST_STORE_TYPES } from '../../queries';
 import { error } from 'jquery';
 
 const Profile = () => {
@@ -39,9 +41,45 @@ const Profile = () => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipOpenCompany, setTooltipOpenCompany] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [hunterList, setHunterList] = useState(false);
+  const [storeTypeList, setStoreTypeList] = useState(false);
 
   const toggle = () => setTooltipOpen(!tooltipOpen);
   const toggleCompany = () => setTooltipOpenCompany(!tooltipOpenCompany);
+  
+  const { refetch1 } = useQuery(GET_LIST_HUNTERS, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (dat) => updateHunterList(dat),
+  });
+  const updateHunterList = (data) => {
+    const newArrayOfObj = JSON.parse(data.getHuntersList.response).map(({
+      Id: value,
+      Name: label,
+      ...rest
+    }) => ({
+      value,
+      label,
+      ...rest
+    }));
+    setHunterList(newArrayOfObj);
+  };
+
+  const { refetch2 } = useQuery(GET_LIST_STORE_TYPES, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (dat) => updateStoreTypeList(dat),
+  });
+  const updateStoreTypeList = (data) => {
+    const newArrayOfObj = JSON.parse(data.getStoreTypeList.response).map(({
+      Id: value,
+      Name: label,
+      ...rest
+    }) => ({
+      value,
+      label,
+      ...rest
+    }));
+    setStoreTypeList(newArrayOfObj);
+  };
 
 
   const updateName = (e) => {
@@ -141,33 +179,13 @@ const Profile = () => {
           companyAddress: addressStore,
           companyPhoneNumber: phoneStore,
           companyPhoneNumber2: phoneStore2,
-          hunter: hunterStore,
-          tipo:tipo,
+          hunterId: hunterStore,
+          tipoId:tipo,
           placeId: placeId
         },
       });
     }
   };
-  
-  const hunterOptions = [
-    { value: 'Alexis', label: 'Alexis'},
-    { value: 'Estrella', label: 'Estrella'},
-    { value: 'Javier', label: 'Javier' },
-    { value: 'Javier Leyte', label: 'Javier Leyte'},
-    { value: 'Jorge Eduardo', label: 'Jorge Eduardo' },
-    { value: 'Ninguno, llegué solo', label: 'Ninguno, llegué solo'}
-  ]
- 
-  const tipoOptions = [
-    { value: 'Tienda Abarrotes', label: 'Tienda Abarrotes'},
-    { value: 'Pollería', label: 'Pollería'},
-    { value: 'Papelería', label: 'Papelería' },
-    { value: 'Farmacia', label: 'Farmacia'},
-    { value: 'Panadería', label: 'Panadería' },
-    { value: 'Restaurante', label: 'Restaurante' },
-    { value: 'Dulcería', label: 'Dulcería' },
-    { value: 'Otro', label: 'Otro'}
-  ]
   
   return (
     <>
@@ -299,7 +317,7 @@ const Profile = () => {
                             </label>
                             <Select
                               className="form-control-alternative"
-                              options={tipoOptions} 
+                              options={storeTypeList} 
                               onChange={updateTipo}
                               />
                           </FormGroup>
@@ -314,7 +332,7 @@ const Profile = () => {
                             </label>
                             <Select
                               className="form-control-alternative"
-                              options={hunterOptions} 
+                              options={hunterList} 
                               onChange={updateHunter}
                               />
                           </FormGroup>

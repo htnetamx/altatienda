@@ -54,3 +54,25 @@ export const GET_LIST_UPDATE_PRICES_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_LIST_HUNTERS = gql`
+  query getHuntersList {
+    getHuntersList {
+      statusCode
+      message
+      error
+      response
+    }
+  }
+`;
+
+export const GET_LIST_STORE_TYPES = gql`
+  query getStoreTypeList {
+    getStoreTypeList {
+      statusCode
+      message
+      error
+      response
+    }
+  }
+`;

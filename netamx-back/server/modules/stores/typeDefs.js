@@ -7,8 +7,8 @@ const typeDefs = gql`
     companyAddress: String!
     companyPhoneNumber: String!
     companyPhoneNumber2: String!
-    tipo: String!
-    hunter: String!
+    tipoId: Int!
+    hunterId: Int!
     placeId: String!
   }
 
