@@ -88,9 +88,11 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     let responseStringError = {
                         error: 'No es posible iniciar sesión'
                     }
+                    console.log("antes");
                     const result  = await db.Superheroe.findOne({ where: { nameUser: input.nameUser, active:true  },
                         attributes: ['Id', 'Password','Email', 'Name1']
                     });
+                    console.log("despues");
                     if(result !== null) {
                         let dataSuperheroe = result.get({ plain: true })
                         if (!bcrypt.compareSync(input.password, dataSuperheroe.Password)) {
