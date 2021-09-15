@@ -32,3 +32,14 @@ export const GET_LIST_PROCUREMENT = gql`
     }
   }
 `;
+
+export const GET_LIST_HUNTERS = gql`
+  query getHuntersList {
+    getHuntersList {
+      statusCode
+      message
+      error
+      response
+    }
+  }
+`;
