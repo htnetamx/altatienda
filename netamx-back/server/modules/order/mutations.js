@@ -54,7 +54,6 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             response: JSON.stringify({errorDocument : "Columnas faltantes en el documento : "+ JSON.stringify(errorLayout)})
                         };
                     }
-                    
                     await Helpers.asyncForEach(jsonData, async (element) => {
                         const queryProduct = await db.Product.findOne({ where: { Sku:`${element.SKU}` }});
                         if(queryProduct == null){
@@ -143,6 +142,11 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             const dataResponseActivityLog = await db.ActivityLogCreateMassive.create(inputMassive, {transaction})
                             let dataResult = dataResponseActivityLog.get({ plain: true });
                             let IdLoadMassive = dataResult.Id
+                            console.log("------      0        ----");
+                            console.log("-------------------------");
+                            console.log(jsonData);
+                            console.log("-------------------------");
+                            console.log("-------------------------");
                             await Helpers.asyncForEach(jsonData, async (element) => {
                                 const dataInputLogHistory ={
                                     ActivityLogMassiveId: IdLoadMassive,
@@ -170,6 +174,9 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             }
                             
                         } catch (error) {
+                            console.log("Eror 1");
+                            console.log(error);
+                            console.log("");
                             if (transaction) await transaction.rollback();
                             return {
                                 statusCode: 400,
@@ -180,6 +187,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         }
                         
                     }else{
+                        console.log("aca mi papach 2.0");
                         try {
                             const dataResponseActivityLog = await db.ActivityLogCreateMassive.create(inputMassive, {transaction})
                             let dataResultGetIt = dataResponseActivityLog.get({ plain: true });
@@ -191,7 +199,9 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 response: JSON.stringify({errorDetail: data.errorDetail, errorDocument: data.errorDocument == undefined ? '' : data.errorDocument})
                             }
                         } catch (error) {
-                            console
+                            console.log("Eror 2");
+                            console.log(error);
+                            console.log("");
                             if (transaction) await transaction.rollback();
                             return {
                                 statusCode: 400,
@@ -206,11 +216,17 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     
                 } catch (error) {
                     if (transaction) await transaction.rollback();
+                    console.log("Eror 3");
+                    console.log(error);
+                    console.log("");
                     return Handlers.errorCatch(error)
                 }finally{
                     try {
                         if (transaction) await transaction.rollback();
                     } catch (error) {
+                        console.log("Eror 4");
+                        console.log(error);
+                        console.log("");
                     }
                 }
             }

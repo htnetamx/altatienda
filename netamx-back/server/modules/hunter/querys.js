@@ -8,7 +8,7 @@ const Query = (db, rejects, Handlers, bcrypt, Helpers) => {
         {
             const callback = async () => {
                 try {
-                    var data = await db.sequelize.query("select h.Id, h.Name from Hunter h Where h.Name!='Ninguno, llegué solo' Order by h.Name", { type: db.sequelize.QueryTypes.SELECT});
+                    var data = await db.sequelize.query("select h.Id, h.Name from Hunter h Where h.Name!='Ninguno, llegué solo' and h.Name!='NA' Order by h.Name", { type: db.sequelize.QueryTypes.SELECT});
                     var defaults = await db.sequelize.query("select h.Id, h.Name from Hunter h Where h.Name='Ninguno, llegué solo' Order by h.Name", { type: db.sequelize.QueryTypes.SELECT});
                     data.push(defaults[0]);
                     return {

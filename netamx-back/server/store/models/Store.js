@@ -73,14 +73,14 @@ module.exports = function(sequelize, DataTypes) {
     },
     Delegacion: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: true
     },
     Colonia: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: true
     },
     PlaceId: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(100),
       allowNull: false
     },
     FormattedAddress: {

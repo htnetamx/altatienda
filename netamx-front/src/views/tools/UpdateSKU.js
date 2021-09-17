@@ -146,19 +146,19 @@ const UpdateSKU = () => {
     console.log(file.type);
     if (file !== undefined) {
       if (
-        file.type === 'text/csv' ||
-        file.type === 'application/vnd.ms-excel'
+        file.type !== 'text/csv' &&
+        file.type !== 'application/vnd.ms-excel' &&
+        file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       ) {
         setErrorData(
-          'Formato de archivo no válido, por favor guarde el layout en formato Excel (.xls)'
+          'Formato de archivo no válido, por favor guarde el layout en formato Excel (.xls),(.xlsx) o (.csv)'
         );
         setTimeout(() => {
           setErrorData('');
         }, 5000);
       } else {
-        console.log("Hey Jude");
-        //uploadFile(file);
-        //setLoading(true);
+        uploadFile(file);
+        setLoading(true);
       }
     } else {
       setErrorData('Por favor seleccione un archivo');
