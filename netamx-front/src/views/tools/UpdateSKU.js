@@ -143,6 +143,7 @@ const UpdateSKU = () => {
 
   const checkInput = () => {
     const file = document.getElementsByName('archivosubido')[0].files[0];
+    console.log(file.type);
     if (file !== undefined) {
       if (
         file.type === 'text/csv' ||
@@ -155,8 +156,9 @@ const UpdateSKU = () => {
           setErrorData('');
         }, 5000);
       } else {
-        uploadFile(file);
-        setLoading(true);
+        console.log("Hey Jude");
+        //uploadFile(file);
+        //setLoading(true);
       }
     } else {
       setErrorData('Por favor seleccione un archivo');
