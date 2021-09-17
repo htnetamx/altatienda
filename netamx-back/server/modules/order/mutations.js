@@ -68,8 +68,8 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 status = false;
                                 errorDetail.push({ fila:START_ROW, errors:['La tienda con Store_Id ['+ element.SKU+'] no existe.'] })
                             }
-                        }
-                        var statusSku = ""+ element.Status_SKU;                        
+                        } 
+                        var statusSku = ""+ element.Status_SKU;                     
                         if(statusSku.toUpperCase().includes("CAMBIO PRECIO")){
                             if(element.Price == undefined){
                                 status = false;
@@ -80,7 +80,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 status = false;
                                 errorDetail.push({ fila:START_ROW, errors:['El valor de precio es obligatorio solo para estatus "Cambio Precio", valor recibido: ['+ element.Price+']'] })
                             }
-                        }
+                        } 
                         var RegExPattern = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
                         var deliveryDate = ""+element.Original_Delivery_Date;
                         if (!(deliveryDate.match(RegExPattern)) && (element.Original_Delivery_Date!=undefined)) {
@@ -142,11 +142,6 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             const dataResponseActivityLog = await db.ActivityLogCreateMassive.create(inputMassive, {transaction})
                             let dataResult = dataResponseActivityLog.get({ plain: true });
                             let IdLoadMassive = dataResult.Id
-                            console.log("------      0        ----");
-                            console.log("-------------------------");
-                            console.log(jsonData);
-                            console.log("-------------------------");
-                            console.log("-------------------------");
                             await Helpers.asyncForEach(jsonData, async (element) => {
                                 const dataInputLogHistory ={
                                     ActivityLogMassiveId: IdLoadMassive,
@@ -160,7 +155,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                     Status_Payment: element.Status_Payment,
                                     Status_Shipping: element.Status_Shipping,
                                     Price: element.Price,
-                                    Original_Delivery_Date: element.Original_Delivery_Date,
+                                    Original_Delivery_Date: moment(element.Original_Delivery_Date, "DD-MM-YYYY"),
                                     Quantity: element.Quantity
                                 }
                                 await db.OrderItemStatusHistory.create(dataInputLogHistory, {transaction}) 
