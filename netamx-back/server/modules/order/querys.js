@@ -9,7 +9,6 @@ const Query = (db, rejects, Handlers, bcrypt, Helpers) => {
             const callback = async () => {
                 try {
                     const data = await db.sequelize.query("select alcm.Id, alcm.NameAction, alcm.CreatedAt, alcm.UpdatedAt, alcm.Error, alcm.Status, alcm.Detail, alcm.Description from ActivityLogCreateMassive alcm where alcm.NameAction ='Actualiza status de SKU'", { type: db.sequelize.QueryTypes.SELECT});
-                    console.log(data)
                     return {
                         statusCode: 200,
                         message: "success",

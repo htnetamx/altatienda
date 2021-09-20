@@ -87,6 +87,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             status = false;
                             errorDetail.push({ fila:START_ROW, errors:['Fecha no válida : ['+ element.Original_Delivery_Date+']'] })
                         }else{
+                            /*
                             var today = moment(moment().format('DD-MM-YYYY'), 'DD-MM-YYYY');
                             var dateTemp = moment(deliveryDate, 'DD-MM-YYYY');
                             if(dateTemp.diff(today, 'days') > 0){
@@ -96,6 +97,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 status = false;
                                 errorDetail.push({ fila:START_ROW, errors:['Fecha de entrega tiene que ser menor al día actual : ['+ element.Original_Delivery_Date+']'] })
                             }
+                            */
                         }
                         if(element.Quantity == undefined){
                             status = false;
@@ -171,7 +173,6 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         } catch (error) {
                             console.log("Eror 1");
                             console.log(error);
-                            console.log("");
                             if (transaction) await transaction.rollback();
                             return {
                                 statusCode: 400,
@@ -182,7 +183,6 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         }
                         
                     }else{
-                        console.log("aca mi papach 2.0");
                         try {
                             const dataResponseActivityLog = await db.ActivityLogCreateMassive.create(inputMassive, {transaction})
                             let dataResultGetIt = dataResponseActivityLog.get({ plain: true });
@@ -196,7 +196,6 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         } catch (error) {
                             console.log("Eror 2");
                             console.log(error);
-                            console.log("");
                             if (transaction) await transaction.rollback();
                             return {
                                 statusCode: 400,
@@ -213,7 +212,6 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     if (transaction) await transaction.rollback();
                     console.log("Eror 3");
                     console.log(error);
-                    console.log("");
                     return Handlers.errorCatch(error)
                 }finally{
                     try {
@@ -221,7 +219,6 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     } catch (error) {
                         console.log("Eror 4");
                         console.log(error);
-                        console.log("");
                     }
                 }
             }
