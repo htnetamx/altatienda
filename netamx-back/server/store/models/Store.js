@@ -86,6 +86,10 @@ module.exports = function(sequelize, DataTypes) {
     FormattedAddress: {
       type: DataTypes.STRING(1000),
       allowNull: false
+    },
+    NetaCoin: {
+      type: DataTypes.DECIMAL(13,2),
+      allowNull: false
     }
   }, {
     sequelize,

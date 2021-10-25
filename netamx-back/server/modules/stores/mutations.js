@@ -81,7 +81,8 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 Delegacion:delegacion,
                                 Colonia:colonia,
                                 PlaceId:placeId,
-                                FormattedAddress:response.data.result.formatted_address
+                                FormattedAddress:response.data.result.formatted_address,
+                                NetaCoin: 100
                             }
                         )
                         return {
