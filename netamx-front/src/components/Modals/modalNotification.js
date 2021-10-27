@@ -45,10 +45,10 @@ const ModalNotification = (props) => {
         <ModalBody>
           <h1 style={{textAlign:"center", marginBottom:20}}>{titleModal}</h1>
           {textBody === '' ? <div>
-          <div>
-            Hola! Encuentra <Emoji label="paper-toilet" symbol="🧻"/><Emoji label="paper-toilet" symbol="🧻"/> papel higiénico Pétalo 12 rollos a $30 pesitos ( ~antes $69 pesos~ ) en: <strong>{nameStore}</strong>, si juntamos 10 clientes entre todos!
-            </div>
-            <div>Ingresa a esta liga y compártela cuando termines para que lleguemos a 10 <Emoji label="party-face" symbol="🥳"/><Emoji label="party-face" symbol="🥳"/>: {urlGenerada}</div>
+          ¡<strong>{nameStore}</strong> bienvenido a *netamx*! <Emoji label="wave-hand" symbol="👋🏼"/><Emoji label="party-face" symbol="🥳"/><br/>
+          En esta liga encontrarás el mejor catálogo de productos y las mejores promociones de todo México! <Emoji label="money-face" symbol="🤑"/><Emoji label="surprise-face" symbol="😱"/><Emoji label="smiley-face" symbol="😁"/><br/>
+          ¡Comparte esta liga todos los días con tus clientes, amigos y vecinos para que empiecen a comprar! <Emoji label="shoppin-cart" symbol="🛒"/><Emoji label="money-bag" symbol="💰"/><br/>
+          {urlGenerada}
           </div>
           : textBody}
             {urlGenerada === '' ? null :  <div style={{textAlign:"center", marginTop:30}}><Clipboard data-clipboard-text={props.urlGenerada} style={{border:0, background:'none'}}>
