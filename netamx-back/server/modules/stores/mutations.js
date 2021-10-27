@@ -47,6 +47,14 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             },
                           }
                         const response3= await axios.get("https://maps.googleapis.com/maps/api/geocode/json",config);
+                        config = {
+                            params: {
+                              key: "AIzaSyB_crvidpxslegL0D-Uhetp393_OJmfixo",
+                              latlng: lat+","+lng,
+                              result_type: "postal_code"
+                            },
+                        }
+                        const response4= await axios.get("https://maps.googleapis.com/maps/api/geocode/json",config);
                         var delegacion;
                         try{
                             delegacion=response2.data.results[0].address_components[0].long_name;
@@ -60,6 +68,13 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         }
                         catch{
                             colonia="";
+                        }
+                        var zipcode;
+                        try{
+                            zipcode=response4.data.results[0].address_components[0].long_name;
+                        }
+                        catch{
+                            zipcode="";
                         }
                         await db.Store.create(
                             {
@@ -82,7 +97,8 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 Colonia:colonia,
                                 PlaceId:placeId,
                                 FormattedAddress:response.data.result.formatted_address,
-                                NetaCoin: 100
+                                ZipCode: zipcode,
+                                NetaCoin: 0
                             }
                         )
                         return {

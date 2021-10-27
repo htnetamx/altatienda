@@ -90,6 +90,10 @@ module.exports = function(sequelize, DataTypes) {
     NetaCoin: {
       type: DataTypes.DECIMAL(13,2),
       allowNull: false
+    },
+    ZipCode: {
+      type: DataTypes.STRING(15),
+      allowNull: false
     }
   }, {
     sequelize,
