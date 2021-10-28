@@ -12,8 +12,10 @@ const ModalNotification = (props) => {
     nameStore, 
     urlGenerada
   } = props;
-  const msj = `Hola!%20Encuentra%20🧻🧻%20papel%20higiénico%20Pétalo%2012%20rollos%20a%20$30%20pesitos%20(%20~antes%20$69%20pesos~%20)%20en%20*${nameStore}*,%20sí%20juntamos%2010%20clientes%20entre%20todos!%20Ingresa%20a%20esta%20liga%20y%20compártela%20cuando%20termines%20para%20que%20lleguemos%20a%2010%20🥳🥳:%20${props.urlGenerada}`;
-  
+ const msj=`¡${nameStore}%20bienvenido%20a%20*netamx*!%20👋🏼🥳%0a
+En%20esta%20liga%20encontrarás%20el%20mejor%20catálogo%20de%20productos%20y%20las%20mejores%20promociones%20de%20todo%20México!🤑😱😁%0a
+¡Comparte%20esta%20liga%20todos%20los%20días%20con%20tus%20clientes,%20amigos%20y%20vecinos%20para%20que%20empiecen%20a%20comprar!🛒💰%0a
+${urlGenerada}`
 
   const Emoji = props => (
     <span
