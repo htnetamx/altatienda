@@ -12,7 +12,7 @@ const ModalNotification = (props) => {
     nameStore, 
     urlGenerada
   } = props;
- const msj=`¡${nameStore}%20bienvenido%20a%20*netamx*!%20👋🏼🥳%0a
+ const msj=`¡*${nameStore}*%20bienvenido%20a%20*netamx*!%20👋🏼🥳%0a
 En%20esta%20liga%20encontrarás%20el%20mejor%20catálogo%20de%20productos%20y%20las%20mejores%20promociones%20de%20todo%20México!🤑😱😁%0a
 ¡Comparte%20esta%20liga%20todos%20los%20días%20con%20tus%20clientes,%20amigos%20y%20vecinos%20para%20que%20empiecen%20a%20comprar!🛒💰%0a
 ${urlGenerada}`
