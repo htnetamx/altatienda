@@ -24,7 +24,9 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     for (var i=0; i < nameStoreArray.length; i++) {
                         nameStoreTemp =  nameStoreTemp + nameStoreArray[i]
                     }
-                    const response= await axios.get("https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyB_crvidpxslegL0D-Uhetp393_OJmfixo&placeid=" + placeId);
+                    var googel_api_key='AIzaSyBB0EC3OqxZ3XAlJq3MOMlngkY4fBebofw';
+                    
+                    const response= await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBB0EC3OqxZ3XAlJq3MOMlngkY4fBebofw&placeid=` + placeId);
                     var urlStore = `https://${nameStoreTemp}.netamx.app/`;
                     var host = `${nameStoreTemp}.netamx.app`;
                     const resultQueryStore = await db.Store.findOne({where: {Url: urlStore}})
@@ -33,7 +35,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         const lng=response.data.result.geometry.location.lng;
                         var config = {
                             params: {
-                              key: "AIzaSyB_crvidpxslegL0D-Uhetp393_OJmfixo",
+                              key: `${googel_api_key}`,
                               latlng: lat+","+lng,
                               result_type: "administrative_area_level_3"
                             },
@@ -41,7 +43,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         const response2= await axios.get("https://maps.googleapis.com/maps/api/geocode/json",config);
                         config = {
                             params: {
-                              key: "AIzaSyB_crvidpxslegL0D-Uhetp393_OJmfixo",
+                              key: `${googel_api_key}`,
                               latlng: lat+","+lng,
                               result_type: "sublocality_level_1"
                             },
@@ -49,7 +51,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         const response3= await axios.get("https://maps.googleapis.com/maps/api/geocode/json",config);
                         config = {
                             params: {
-                              key: "AIzaSyB_crvidpxslegL0D-Uhetp393_OJmfixo",
+                              key: `${googel_api_key}`,
                               latlng: lat+","+lng,
                               result_type: "postal_code"
                             },
