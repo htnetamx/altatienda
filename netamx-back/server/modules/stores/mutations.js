@@ -27,7 +27,8 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     var googel_api_key='AIzaSyBB0EC3OqxZ3XAlJq3MOMlngkY4fBebofw';
                     
                     const response= await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBB0EC3OqxZ3XAlJq3MOMlngkY4fBebofw&placeid=` + placeId);
-                    var urlStore = `https://${nameStoreTemp}.netamx.app/`;
+                    //var urlStore = `https://${nameStoreTemp}.netamx.app/`;
+                    var urlStore = `http://${nameStoreTemp}.netamx.app/`;
                     var host = `${nameStoreTemp}.netamx.app`;
                     const resultQueryStore = await db.Store.findOne({where: {Url: urlStore}})
                     if(resultQueryStore == null && response!=null){
@@ -89,7 +90,8 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 CompanyPhoneNumber2: companyPhoneNumber2,
                                 TipoId: tipoId,
                                 DisplayOrder: 1,
-                                SslEnabled: 0,
+                                //SslEnabled: 0,
+                                SslEnabled: 1,
                                 DefaultLanguageId: 0,
                                 CreatedOnUtc : moment(),
                                 HunterId: hunterId,
