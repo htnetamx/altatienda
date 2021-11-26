@@ -49,6 +49,7 @@ var _GenericAttribute = require("./GenericAttribute");
 var _GiftCard = require("./GiftCard");
 var _GiftCardUsageHistory = require("./GiftCardUsageHistory");
 var _GoogleAuthenticatorRecord = require("./GoogleAuthenticatorRecord");
+var _Hunter = require("./Hunter");
 var _Language = require("./Language");
 var _LocaleStringResource = require("./LocaleStringResource");
 var _LocalizedProperty = require("./LocalizedProperty");
@@ -187,6 +188,7 @@ function initModels(sequelize) {
   var GiftCard = _GiftCard(sequelize, DataTypes);
   var GiftCardUsageHistory = _GiftCardUsageHistory(sequelize, DataTypes);
   var GoogleAuthenticatorRecord = _GoogleAuthenticatorRecord(sequelize, DataTypes);
+  var Hunter = _Hunter(sequelize, DataTypes);
   var Language = _Language(sequelize, DataTypes);
   var LocaleStringResource = _LocaleStringResource(sequelize, DataTypes);
   var LocalizedProperty = _LocalizedProperty(sequelize, DataTypes);
@@ -580,6 +582,7 @@ function initModels(sequelize) {
     GiftCard,
     GiftCardUsageHistory,
     GoogleAuthenticatorRecord,
+    Hunter,
     Language,
     LocaleStringResource,
     LocalizedProperty,
