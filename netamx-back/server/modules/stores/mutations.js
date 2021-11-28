@@ -89,7 +89,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 CompanyPhoneNumber: companyPhoneNumber,
                                 CompanyPhoneNumber2: companyPhoneNumber2,
                                 TipoId: tipoId,
-                                DisplayOrder: 1,
+                                DisplayOrder: 2,
                                 //SslEnabled: 0,
                                 SslEnabled: 1,
                                 DefaultLanguageId: 0,
