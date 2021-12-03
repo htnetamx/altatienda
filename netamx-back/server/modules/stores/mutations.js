@@ -26,9 +26,8 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     }
                     var googel_api_key='AIzaSyBB0EC3OqxZ3XAlJq3MOMlngkY4fBebofw';
                     
-                    const response= await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyBB0EC3OqxZ3XAlJq3MOMlngkY4fBebofw&placeid=` + placeId);
-                    //var urlStore = `https://${nameStoreTemp}.netamx.app/`;
-                    var urlStore = `http://${nameStoreTemp}.netamx.app/`;
+                    const response= await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?key=${googel_api_key}&placeid=` + placeId);
+                    var urlStore = `https://${nameStoreTemp}.netamx.app/`;
                     var host = `${nameStoreTemp}.netamx.app`;
                     const resultQueryStore = await db.Store.findOne({where: {Url: urlStore}})
                     if(resultQueryStore == null && response!=null){
@@ -58,6 +57,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                             },
                         }
                         const response4= await axios.get("https://maps.googleapis.com/maps/api/geocode/json",config);
+
                         var delegacion;
                         try{
                             delegacion=response2.data.results[0].address_components[0].long_name;
