@@ -419,6 +419,20 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: false
     },
+    PerTaras: {
+      type: DataTypes.DECIMAL(10,0),
+      allowNull: false
+    },
+    Deprecated: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      default: false
+    },
+    IsPromotionProduct: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      default: false
+    },
     IdActivityLogCreateMassive: {
       type: DataTypes.INTEGER,
       allowNull: true,

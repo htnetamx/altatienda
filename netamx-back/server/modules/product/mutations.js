@@ -29,8 +29,7 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                     var worksheet = workbook.Sheets[first_sheet_name];
                     var allSkuAvailable = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]],{ raw: false, range:"R"+INICIO+":R1048576", header:1, blankrows:false });
                     let limit = (INICIO + allSkuAvailable.length) -1
-
-                    var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]],{ raw: false, range:"A"+INICIO+":CR"+ limit, header:"A" });
+                    var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]],{ raw: false, range:"A"+INICIO+":CS"+ limit, header:"A" });
                     if(xlData.length == 0) {
                         status = false
                         data.errorDocument = 'Este documento no contiene registros para procesar.'
@@ -47,10 +46,13 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                         data.errorDocument="Este documento contiene números de Skus repetidos."
                     }
 
+                    const AvailableCategories = await db.sequelize.query("select c.Id,c.Name From Category c limit 200000", { type: db.sequelize.QueryTypes.SELECT});
+                    const AvailableManufacturers = await db.sequelize.query("select m.Id,m.Name From Manufacturer m limit 200000", { type: db.sequelize.QueryTypes.SELECT});
+                    
                     for(let i=0; i<xlData.length; i++){
                         try {
                             //console.log(i, ':xlData[i] =>', xlData[i])
-                            const statusOne = await Handlers.checkRowProduct(xlData[i])
+                            const statusOne = await Handlers.checkRowProduct(xlData[i],(AvailableCategories).map(a=>a.Name),(AvailableManufacturers).map(a=>a.Name))
                             status = status && statusOne.status 
                             data[xlData[i].R] = statusOne
                             if(statusOne.errors.length> 0) errorDetail.push({ fila:START_ROW, errors:statusOne.errors }) 
@@ -86,7 +88,30 @@ const Mutations = (db, rejects, Handlers, Helpers, bcrypt) => {
                                 // console.log('dataInput', dataInput, dataResult)
                                 const dataResponseProduct = await db.Product.create(dataInput, {transaction})
                                 const dataResultProduct = dataResponseProduct.get({ plain: true });
-                                const IdProduct = dataResultProduct.Id
+                                const IdProduct = dataResultProduct.Id;
+
+                                ((xlData[i].CO.split(";")).map(s=>s.trim())).filter(s=>s!=null && s!='').forEach(async function (item, index) {
+                                    var categoryId=AvailableCategories.filter(c=>c.Name==item).map(c=>c.Id)
+                                    var inputProductCategory={
+                                        CategoryId: categoryId,
+                                        ProductId: IdProduct,
+                                        IsFeaturedProduct: false,
+                                        DisplayOrder:false
+                                    }
+                                    await db.Product_Category_Mapping.create(inputProductCategory, {transaction})
+                                });
+
+                                ((xlData[i].CP.split(";")).map(s=>s.trim())).filter(s=>s!=null && s!='').forEach(async function (item, index) {
+                                    var manufacturerId=AvailableManufacturers.filter(m=>m.Name==item).map(m=>m.Id)
+                                    var inputProductmanufacturer={
+                                        ManufacturerId: manufacturerId,
+                                        ProductId: IdProduct,
+                                        IsFeaturedProduct: false,
+                                        DisplayOrder:false
+                                    }
+                                    await db.Product_Manufacturer_Mapping.create(inputProductmanufacturer, {transaction})
+                                });
+
                                 const dataInputUrlRecord = {
                                     EntityName:'Product',
                                     Slug,

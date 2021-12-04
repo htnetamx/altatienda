@@ -124,6 +124,7 @@ const UpdateProducts = () => {
     { label: 'Manufacturers', key: 'manufacturers' },
     { label: 'ProductTags', key: 'PTags' },
     { label: 'LimitedToStores', key: 'LTS' },
+    { label: 'PerTaras', key: 'PS' }
   ];
   const filas2 = [
     {
